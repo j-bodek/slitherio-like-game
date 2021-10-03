@@ -62,7 +62,6 @@ let leave_mass = function () {
 
 function draw() {
 
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     index++
@@ -92,7 +91,7 @@ function draw() {
             food_coordinates.splice(index, 1)
             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
             // make snake longer
-            len += 100
+            len++
             // generate new food
             let x = Math.floor(Math.random() * 2000);
             let y = Math.floor(Math.random() * 2000);
