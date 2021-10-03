@@ -6,6 +6,7 @@ let ctx = canvas.getContext('2d');
 let raf;
 let running = false;
 let index = 0;
+let lose_mass = 1;
 let len = 10;
 
 
@@ -64,25 +65,56 @@ function draw() {
     ball.y += ball.vy;
 
 
+    // after eating food
     food_coordinates.forEach((food) => {
         if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
+            // remove food
             let index = food_coordinates.indexOf(food);
             food_coordinates.splice(index, 1)
             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+            // make snake longer
             len++
+            // generate new food
+            let x = Math.floor(Math.random() * 2000);
+            let y = Math.floor(Math.random() * 2000);
+            let radius = (5 + Math.floor(Math.random() * 5));
+            let color = 'red';
+
+            food_coordinates.push({
+                'x': x,
+                'y': y,
+                'radius': radius,
+                'color': color
+            })
+
+            ctx_food.beginPath();
+            ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
+            ctx_food.closePath();
+            ctx_food.fillStyle = color;
+            ctx_food.fill();
         }
     })
 
 
+    // change camera view
     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
 
-
     container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
+    // lose mass logic
+    if (lose_mass % 100 == 0) {
+        // subtract one from length
+        lose_mass = 1
+        len--
+        ball.tail.shift()
+    } else {
+        lose_mass++
+    }
 
 
 
+    // after hiting border
     if (ball.y + ball.vy > canvas.height ||
         ball.y + ball.vy < 0) {
         ball.vy = -ball.vy;

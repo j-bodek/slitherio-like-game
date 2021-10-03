@@ -13,20 +13,30 @@ let food = function (x, y, radius, color) {
 }
 
 
+let generateCoorginates = function () {
+
+    // generate random coordinates
+    let x = Math.floor(Math.random() * 2000);
+    let y = Math.floor(Math.random() * 2000);
+    let radius = (5 + Math.floor(Math.random() * 5));
+    let color = 'red';
+
+    // push food info to array
+    food_coordinates.push({
+        'x': x,
+        'y': y,
+        'radius': radius,
+        'color': color
+    })
+
+    return [x, y, radius, color]
+}
+
+
 let display_food = function () {
     for (let i = 0; i < 200; i++) {
-        let x = Math.floor(Math.random() * 2000);
-        let y = Math.floor(Math.random() * 2000);
-        let radius = (5 + Math.floor(Math.random() * 5));
-        let color = 'red';
-
-        food_coordinates.push({
-            'x': x,
-            'y': y,
-            'radius': radius,
-            'color': color
-        })
-
+        let [x, y, radius, color] = generateCoorginates()
+        // render food
         food(x, y, radius, color)
     }
 }
