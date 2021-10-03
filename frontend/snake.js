@@ -43,6 +43,23 @@ let ball = {
 };
 
 
+
+let leave_mass = function () {
+    ball.tail.forEach((e) => {
+        let x = Math.floor(e[0] + (Math.random() * 40));
+        let y = Math.floor(e[1] + (Math.random() * 40));
+        let radius = (2 + Math.floor(Math.random() * 4));
+        let color = 'red';
+        ctx_food.beginPath();
+        ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
+        ctx_food.closePath();
+        ctx_food.fillStyle = color;
+        ctx_food.fill();
+    })
+}
+
+
+
 function draw() {
 
 
@@ -75,7 +92,7 @@ function draw() {
             food_coordinates.splice(index, 1)
             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
             // make snake longer
-            len++
+            len += 100
             // generate new food
             let x = Math.floor(Math.random() * 2000);
             let y = Math.floor(Math.random() * 2000);
@@ -117,13 +134,20 @@ function draw() {
 
 
     // after hiting border
-    if (ball.y + ball.vy > canvas.height ||
-        ball.y + ball.vy < 0) {
-        ball.vy = -ball.vy;
+    if (ball.y > canvas.height ||
+        ball.y < 0) {
+
+        len > 0 ? leave_mass() : 0;
+        len = 0
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
     }
-    if (ball.x + ball.vx > canvas.width ||
-        ball.x + ball.vx < 0) {
-        ball.vx = -ball.vx;
+    if (ball.x > canvas.width ||
+        ball.x < 0) {
+        len > 0 ? leave_mass() : 0;
+        len = 0
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     raf = window.requestAnimationFrame(draw);
