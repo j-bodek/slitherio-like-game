@@ -8,6 +8,8 @@ let running = false;
 let index = 0;
 let lose_mass = 1;
 let len = 10;
+let speed = 3;
+let mass_losing_speed = 100;
 
 
 let centerX = window.innerWidth / 2;
@@ -103,7 +105,7 @@ function draw() {
     container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
     // lose mass logic
-    if (lose_mass % 100 == 0) {
+    if (lose_mass % mass_losing_speed == 0) {
         // subtract one from length
         lose_mass = 1
         len--
