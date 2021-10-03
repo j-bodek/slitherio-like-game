@@ -6,6 +6,7 @@ let ctx = canvas.getContext('2d');
 let raf;
 let running = false;
 let index = 0;
+let len = 10;
 
 
 let centerX = window.innerWidth / 2;
@@ -45,10 +46,10 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     index++
-    if (ball.tail.length < 10 && index % 1 == 0) {
+    if (ball.tail.length < len && index % 1 == 0) {
         ball.tail.push([ball.x, ball.y])
         index = 0
-    } else if (ball.tail.length == 10 && index % 1 == 0) {
+    } else if (ball.tail.length == len && index % 1 == 0) {
         ball.tail.shift()
         ball.tail.push([ball.x, ball.y])
         index = 0
@@ -63,6 +64,14 @@ function draw() {
     ball.y += ball.vy;
 
 
+    food_coordinates.forEach((food) => {
+        if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
+            let index = food_coordinates.indexOf(food);
+            food_coordinates.splice(index, 1)
+            ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+            len++
+        }
+    })
 
 
     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
@@ -85,30 +94,3 @@ function draw() {
 
     raf = window.requestAnimationFrame(draw);
 }
-
-
-// on mouse move change angle 
-canvas.addEventListener('mousemove', function (e) {
-    if (running) {
-        let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-        let scale = 3 / len
-
-        ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-        ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
-
-    }
-});
-
-canvas.addEventListener('mouseover', function (e) {
-    if (!running) {
-        raf = window.requestAnimationFrame(draw);
-        running = true;
-    }
-});
-
-canvas.addEventListener('mouseout', function (e) {
-    window.cancelAnimationFrame(raf);
-    running = false;
-});
-
-ball.draw();
