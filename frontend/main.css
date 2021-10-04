@@ -16,12 +16,8 @@ body {
 
 #food_box {
     /* position: absolute; */
-    background-color: #3e3e73;
-    opacity: 0.7;
-    background-image: linear-gradient(#e5e6f9 0.7000000000000001px, transparent 0.7000000000000001px), linear-gradient(to right, #e5e6f9 0.7000000000000001px, #3e3e73 0.7000000000000001px);
-    background-size: 14px 14px;
-    margin-left: 0px;
-    margin-top: 0px;
+    background-image: url('prism.png');
+    /* background-size: 1200px; */
 }
 
 #box {

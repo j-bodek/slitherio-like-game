@@ -4,7 +4,7 @@ let ctx_food = canvas_food.getContext('2d');
 let food_coordinates = []
 
 
-let food = function (x, y, radius, color) {
+let generate_point = function (x, y, radius, color) {
     ctx_food.beginPath();
     ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
     ctx_food.closePath();
@@ -37,7 +37,7 @@ let display_food = function () {
     for (let i = 0; i < 200; i++) {
         let [x, y, radius, color] = generateCoorginates()
         // render food
-        food(x, y, radius, color)
+        generate_point(x, y, radius, color)
     }
 }
 

@@ -15,6 +15,9 @@ let mass_losing_speed = 100;
 let centerX = window.innerWidth / 2;
 let centerY = window.innerHeight / 2;
 
+
+
+
 let ball = {
     x: centerX,
     y: centerY,
@@ -50,21 +53,15 @@ let leave_mass = function () {
         let y = Math.floor(e[1] + (Math.random() * 40));
         let radius = (2 + Math.floor(Math.random() * 4));
         let color = 'red';
-        ctx_food.beginPath();
-        ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
-        ctx_food.closePath();
-        ctx_food.fillStyle = color;
-        ctx_food.fill();
+        // display food
+        generate_point(x, y, radius, color)
     })
 }
 
 
 
-function draw() {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    index++
+let display_tail = function () {
     if (ball.tail.length < len && index % 1 == 0) {
         ball.tail.push([ball.x, ball.y])
         index = 0
@@ -73,6 +70,43 @@ function draw() {
         ball.tail.push([ball.x, ball.y])
         index = 0
     }
+}
+
+
+let eat_food = function () {
+    food_coordinates.forEach((food) => {
+        if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
+            // remove food
+            let index = food_coordinates.indexOf(food);
+            food_coordinates.splice(index, 1)
+            ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+            // make snake longer
+            len++
+            // generate new point coordinates
+            let [x, y, radius, color] = generateCoorginates()
+            // display point
+            generate_point(x, y, radius, color)
+        }
+    })
+}
+
+
+let die = function () {
+    len > 0 ? leave_mass() : 0;
+    len = 0
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+
+
+
+function draw() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    index++
+    display_tail()
 
 
     ball.tail.forEach((el) => {
@@ -84,34 +118,7 @@ function draw() {
 
 
     // after eating food
-    food_coordinates.forEach((food) => {
-        if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
-            // remove food
-            let index = food_coordinates.indexOf(food);
-            food_coordinates.splice(index, 1)
-            ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
-            // make snake longer
-            len++
-            // generate new food
-            let x = Math.floor(Math.random() * 2000);
-            let y = Math.floor(Math.random() * 2000);
-            let radius = (5 + Math.floor(Math.random() * 5));
-            let color = 'red';
-
-            food_coordinates.push({
-                'x': x,
-                'y': y,
-                'radius': radius,
-                'color': color
-            })
-
-            ctx_food.beginPath();
-            ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
-            ctx_food.closePath();
-            ctx_food.fillStyle = color;
-            ctx_food.fill();
-        }
-    })
+    eat_food()
 
 
     // change camera view
@@ -119,6 +126,7 @@ function draw() {
     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
 
     container.scrollTo((ball.x - centerX), (ball.y - centerY))
+
 
     // lose mass logic
     if (lose_mass % mass_losing_speed == 0) {
@@ -135,19 +143,14 @@ function draw() {
     // after hiting border
     if (ball.y > canvas.height ||
         ball.y < 0) {
-
-        len > 0 ? leave_mass() : 0;
-        len = 0
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
+        die()
     }
     if (ball.x > canvas.width ||
         ball.x < 0) {
-        len > 0 ? leave_mass() : 0;
-        len = 0
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        die()
     }
+
+
 
     raf = window.requestAnimationFrame(draw);
 }
