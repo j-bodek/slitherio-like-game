@@ -2,6 +2,7 @@ let canvas_food = document.getElementById('food_box');
 let ctx_food = canvas_food.getContext('2d');
 
 let food_coordinates = []
+let colors = ['#F2668B', '#7E49F2', '#A38DF2', '#BAF241', '#F29F05']
 
 
 let generate_point = function (x, y, radius, color) {
@@ -19,7 +20,7 @@ let generateCoorginates = function () {
     let x = Math.floor(Math.random() * 2000);
     let y = Math.floor(Math.random() * 2000);
     let radius = (5 + Math.floor(Math.random() * 5));
-    let color = 'red';
+    let color = colors[Math.floor(Math.random() * 6)]
 
     // push food info to array
     food_coordinates.push({

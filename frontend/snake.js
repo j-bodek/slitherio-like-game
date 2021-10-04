@@ -26,20 +26,19 @@ let ball = {
     vx: 0,
     vy: 0,
     radius: 25,
-    color: 'blue',
+    color: '#e9c46a',
+    shade: '#F2DCA6',
     tail: [],
 
 
 
-    draw: function (x, y) {
+    draw: function (x, y, radius, color) {
+
         ctx.beginPath();
-        ctx.arc(x, y, this.radius, 0, Math.PI * 2, true);
+        ctx.arc(x, y, radius, 0, Math.PI * 2, true);
         ctx.closePath();
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = color;
         ctx.fill();
-        ctx.arc(x, y, this.radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.stroke();
 
     },
 
@@ -109,9 +108,20 @@ function draw() {
     display_tail()
 
 
+    // display shades while speeding
+    if (speed == 8) {
+        ball.tail.forEach((el) => {
+            ball.draw(el[0], el[1], 28, ball.shade)
+        })
+    }
+
+
+    // display main warm
     ball.tail.forEach((el) => {
-        ball.draw(el[0], el[1])
+        ball.draw(el[0], el[1], 25, ball.color)
     })
+
+
 
     ball.x += ball.vx;
     ball.y += ball.vy;
