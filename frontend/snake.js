@@ -10,10 +10,53 @@ let lose_mass = 1;
 let len = 10;
 let speed = 3;
 let mass_losing_speed = 100;
+let warmParts = []
 
 
 let centerX = window.innerWidth / 2;
 let centerY = window.innerHeight / 2;
+
+
+
+class warmPart {
+    constructor(x, y, velocityX, velocityY, color, radius) {
+        this.x = x;
+        this.y = y;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+        this.color = color;
+        this.radius = radius;
+    }
+
+    draw_part() {
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+
+    update() {
+        this.draw_part()
+        // lose speed
+        this.x += .98 * this.velocityX
+        this.y += .98 * this.velocityY
+        this.velocityX = .98 * this.velocityX
+        this.velocityY = .98 * this.velocityY
+
+        // bounce from wall
+        if ((this.y > canvas.height && this.velocityY > 0) ||
+            (this.y < 0 && this.velocityY < 0)) {
+            this.velocityY = -this.velocityY
+        }
+        if ((this.x > canvas.width && this.velocityX > 0) ||
+            (this.x < 0 && this.velocityX < 0)) {
+            this.velocityX = -this.velocityX
+        }
+    }
+}
+
 
 
 
@@ -89,11 +132,28 @@ let eat_food = function () {
     })
 }
 
+let createparts = function () {
+    for (let i = 0; i < len; i++) {
+
+        warmParts.push(new warmPart(ball.x, ball.y,
+            (speed / 3) * ((Math.random() * 8) - 4),
+            (speed / 3) * ((Math.random() * 8) - 4),
+            colors[(Math.round(Math.random() * 5))],
+            (5 + Math.floor(Math.random() * 5))
+        ))
+    }
+}
+
 
 let die = function () {
-    len > 0 ? leave_mass() : 0;
+
+    len > 0 ? createparts() : 0;
     len = 0
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    warmParts.forEach((part) => {
+        part.update()
+    })
 }
 
 

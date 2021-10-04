@@ -16,8 +16,8 @@ body {
 
 #food_box {
     /* position: absolute; */
-    background-image: url('prism.png');
-    /* background-size: 1200px; */
+    background-image: url('dark-honeycomb.png');
+    background-size: 1200px;
 }
 
 #box {

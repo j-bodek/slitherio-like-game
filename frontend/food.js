@@ -19,8 +19,8 @@ let generateCoorginates = function () {
     // generate random coordinates
     let x = Math.floor(Math.random() * 2000);
     let y = Math.floor(Math.random() * 2000);
-    let radius = (5 + Math.floor(Math.random() * 5));
-    let color = colors[Math.floor(Math.random() * 6)]
+    let radius = (5 + Math.round(Math.random() * 5));
+    let color = colors[Math.round(Math.random() * 6)]
 
     // push food info to array
     food_coordinates.push({
