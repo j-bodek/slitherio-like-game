@@ -104,10 +104,10 @@ let leave_mass = function () {
 
 
 let display_tail = function () {
-    if (ball.tail.length < len && index % 1 == 0) {
+    if (ball.tail.length < len) {
         ball.tail.push([ball.x, ball.y])
         index = 0
-    } else if (ball.tail.length == len && index % 1 == 0) {
+    } else if (ball.tail.length == len) {
         ball.tail.shift()
         ball.tail.push([ball.x, ball.y])
         index = 0
@@ -162,24 +162,28 @@ let die = function () {
 
 function draw() {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     index++
     display_tail()
 
 
     // display shades while speeding
-    if (speed == 8) {
-        ball.tail.forEach((el) => {
-            ball.draw(el[0], el[1], 28, ball.shade)
-        })
-    }
+    // if (speed == 8) {
+    //     ball.tail.forEach((el) => {
+    //         ball.draw(el[0], el[1], 28, ball.shade)
+    //     })
+    // }
 
+    chatSocket.send(JSON.stringify({
+        'message': ball.tail
+    }));
 
     // display main warm
-    ball.tail.forEach((el) => {
-        ball.draw(el[0], el[1], 25, ball.color)
-    })
+    // ball.tail.forEach((el) => {
+    //     ball.draw(el[0], el[1], 25, ball.color)
+    // })
+
+
 
 
 
@@ -188,7 +192,7 @@ function draw() {
 
 
     // after eating food
-    eat_food()
+    // eat_food()
 
 
     // change camera view
@@ -198,29 +202,44 @@ function draw() {
     container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
 
-    // lose mass logic
-    if (lose_mass % mass_losing_speed == 0) {
-        // subtract one from length
-        lose_mass = 1
-        len--
-        ball.tail.shift()
-    } else {
-        lose_mass++
-    }
+    // // lose mass logic
+    // if (lose_mass % mass_losing_speed == 0) {
+    //     // subtract one from length
+    //     lose_mass = 1
+    //     len--
+    //     ball.tail.shift()
+    // } else {
+    //     lose_mass++
+    // }
 
 
 
-    // after hiting border
-    if (ball.y > canvas.height ||
-        ball.y < 0) {
-        die()
-    }
-    if (ball.x > canvas.width ||
-        ball.x < 0) {
-        die()
-    }
+    // // after hiting border
+    // if (ball.y > canvas.height ||
+    //     ball.y < 0) {
+    //     die()
+    // }
+    // if (ball.x > canvas.width ||
+    //     ball.x < 0) {
+    //     die()
+    // }
 
 
+
+
+}
+
+
+chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+
+    console.log(data['message'].length);
+
+    // display main warm
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    data['message'].forEach((el) => {
+        ball.draw(el[0], el[1], 25, ball.color)
+    })
 
     raf = window.requestAnimationFrame(draw);
-}
+};
