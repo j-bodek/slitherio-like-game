@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('dark-honeycomb.png');
+    background-size: 1200px;
+}
+
+/* game */
+#world {
+    width: 100%;
+    height: 100vh;
+    overflow: scroll;
+    position: absolute;
+    /* Hide vertical scrollbar */
+    overflow-y: hidden;
+    /* Hide horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+#food_box {
+    /* position: absolute; */
+    background-image: url('dark-honeycomb.png');
+    background-size: 1200px;
+}
+
+#box {
+    z-index: 10;
+    position: absolute;
+}
+
+img {
+    background-color: #3e3e73;
+    opacity: 0.7;
+    background-image: linear-gradient(#e5e6f9 0.7000000000000001px, transparent 0.7000000000000001px), linear-gradient(to right, #e5e6f9 0.7000000000000001px, #3e3e73 0.7000000000000001px);
+    background-size: 14px 14px;
+}
+
+
+/* Starting page */
+.container {
+    /* width: 600px;
+    height: 300px; */
+    display: flex;
+    /* padding: 40px 60px; */
+    position: absolute;
+    left: calc(50% - 395px);
+    top: calc(50vh - 150px);
+    /* border-radius: 20px; */
+    text-align: center;
+}
+
+.container h2 {
+    color: #ccc;
+}
+
+
+.container form input,
+.container form button {
+    display: block;
+    margin: auto;
+    width: 200px;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* input */
+.container form input {
+    border: 2px solid #eee;
+}
+
+.container form input:focus {
+    outline-width: 0;
+}
+
+/* button */
+.container form button {
+    border: 2px solid #85FFC8;
+    background: #A5FFD6;
+    cursor: pointer;
+}
+
+.container form button:hover {
+    background: #85FFC8;
+    transition: ease-in-out .1s;
+}
+
+.play,
+.create_server,
+.choose_game_mode {
+    background: #3e3e73;
+    width: 200px;
+    padding: 20px 30px;
+    border-radius: 20px;
+}
+
+.play {
+    margin: 0px 5px;
+}
+
+.create_server {
+    padding-top: 60px;
+}
+
+
+.choose_game_mode {
+    padding-top: 65px;
+}
+
+
+.choose_game_mode div {
+    display: block;
+    float: left;
+    color: #ccc;
+    size: 18px;
+    padding-bottom: 5px
+}
+
+.choose_game_mode input:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #85FFC8;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+}
+
+/* close btn */
+.close {
+    position: absolute;
+    top: 10;
+    left: 230;
+    font-size: 20px;
+    cursor: pointer;
+}

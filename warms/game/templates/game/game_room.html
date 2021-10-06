@@ -1,14 +1,32 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8"/>
     <title>Chat Room</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    <!-- <canvas id='test' height="1000" width="1000" style='border: solid 2px balck'></canvas> -->
+
+
+
+    <div id="world">
+        <canvas id='box' width="2000" height="2000" style="border: 1px solid black;"></canvas>
+        <canvas id='food_box' width="2000" height="2000" style="border: 1px solid black;"></canvas>
+    </div>
+
+
+
+
+
+
+
     {{ room_name|json_script:"room-name" }}
+
+
+
+
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
@@ -22,28 +40,49 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            
+            ctx.beginPath();
+            ctx.arc(data['message'][0], data['message'][1], 10, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fillStyle = 'red';
+            ctx.fill();
         };
 
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+        // chatSocket.onclose = function(e) {
+        //     console.error('Chat socket closed unexpectedly');
+        // };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
+        // document.querySelector('#chat-message-input').focus();
+        // document.querySelector('#chat-message-input').onkeyup = function(e) {
+        //     if (e.keyCode === 13) {  // enter, return
+        //         document.querySelector('#chat-message-submit').click();
+        //     }
+        // };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
+        let canvas = document.getElementById('test');
+        let ctx = canvas.getContext('2d');
+
+        document.querySelector('#test').onclick = function(e) {
+            coordinates = [e.clientX, e.clientY]
+
+            // const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': coordinates
             }));
-            messageInputDom.value = '';
+  
         };
     </script>
+
+
+
+
+
+    <script  src={% static "javascript/app.js" %}></script>
+    <script  src="{$ static 'js/snake.js' %}"></script>
+    <script  src="{$ static 'js/game.js' %}"></script>
+
 </body>
+
+
+
 </html>
