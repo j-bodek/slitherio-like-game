@@ -129,3 +129,12 @@ img {
     display: inline-block;
     visibility: visible;
 }
+
+/* close btn */
+.close {
+    position: absolute;
+    top: 10;
+    left: 230;
+    font-size: 20px;
+    cursor: pointer;
+}

@@ -12,19 +12,21 @@
 
         <div class='create_server'>
 
-            <form action="">
-                <button>Create Server</button>
-                <button>Join Server</button>
+            <div class='close' style='display: none;'>✖</div>
+
+            <form id='choose_server_form' action="">
+                <button id='create_server_btn'>Create Server</button>
+                <button id='join_server_btn'>Join Server</button>
             </form>
     
-            <form action="" style="display:none">
-                <input type="text" placeholder="Nick">
+            <form id='create_server_form' action="" style="display:none">
+                <input type="text" placeholder="Server Id">
                 <button>Pyknij se gierke</button>
             </form>
     
-            <form action="" style="display:none">
-                <input type="text" placeholder="Nick">
-                <button>Pyknij se gierke</button>
+            <form id='join_server_form' action="" style="display:none">
+                <input type="text" placeholder="Server Id">
+                <button>Join</button>
             </form>
     
         </div>
@@ -66,4 +68,5 @@
 
 
 </body>
+<script src="starting.js"></script>
 </html>
