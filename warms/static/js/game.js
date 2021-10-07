@@ -49,3 +49,7 @@ canvas.addEventListener('mouseout', function (e) {
     window.cancelAnimationFrame(raf);
     running = false;
 });
+
+canvas.addEventListener('click', (e) => {
+    console.log(snakeid);
+})

@@ -22,6 +22,7 @@ let len = 10;
 let speed = 3;
 let mass_losing_speed = 100;
 let warmParts = []
+let snakeid = ''
 
 
 let centerX = window.innerWidth / 2;
@@ -186,7 +187,8 @@ function draw() {
     // }
 
     chatSocket.send(JSON.stringify({
-        'message': ball.tail
+        'message': ball.tail,
+        // 'id': snakeid
     }));
 
     // display main warm
@@ -236,23 +238,134 @@ function draw() {
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
 
-    console.log(data['message'].length);
-
-    // display main warm
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    data['message'].forEach((el) => {
-        ball.draw(el[0], el[1], 25, ball.color)
-    })
-
-    // after eating food
-    eat_food()
+    if (data['type'] == 'sender') {
 
 
-    // // change camera view
-    // ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-    // ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+        // // display main warm
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
-    raf = window.requestAnimationFrame(draw);
+
+        // // display shades while speeding
+        // // if (speed == 8) {
+        // //     ball.tail.forEach((el) => {
+        // //         ball.draw(el[0], el[1], 28, ball.shade)
+        // //     })
+        // // }
+
+        // chatSocket.send(JSON.stringify({
+        //     'message': ball.tail,
+        //     // 'id': snakeid
+        // }));
+
+        // // display main warm
+        // // ball.tail.forEach((el) => {
+        // //     ball.draw(el[0], el[1], 25, ball.color)
+        // // })
+
+
+        // data['message'].forEach((el) => {
+        //     ball.draw(el[0], el[1], 25, ball.color)
+        // })
+
+        // // after eating food
+        // eat_food()
+
+
+        // // change camera view
+        // ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+        // ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+
+        // container.scrollTo((ball.x - centerX), (ball.y - centerY))
+
+        // index++
+        // display_tail()
+
+
+
+        // ball.x += ball.vx;
+        // ball.y += ball.vy;
+
+
+
+
+
+        // // lose mass logic
+        // if (lose_mass % mass_losing_speed == 0) {
+        //     // subtract one from length
+        //     lose_mass = 1
+        //     len--
+        //     ball.tail.shift()
+        // } else {
+        //     lose_mass++
+        // }
+
+
+
+        // // after hiting border
+        // if (ball.y > canvas.height ||
+        //     ball.y < 0) {
+        //     die()
+        // }
+        // if (ball.x > canvas.width ||
+        //     ball.x < 0) {
+        //     die()
+        // }
+
+
+
+    } else {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+        index++
+        display_tail()
+
+
+        // display shades while speeding
+        if (speed == 8) {
+            ball.tail.forEach((el) => {
+                ball.draw(el[0], el[1], 28, ball.shade)
+            })
+        }
+
+
+        // display main warm
+        ball.tail.forEach((el) => {
+            ball.draw(el[0], el[1], 25, ball.color)
+        })
+
+        chatSocket.send(JSON.stringify({
+            'message': ball.tail,
+            // 'id': snakeid
+        }));
+
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+
+        // after eating food
+        eat_food()
+
+
+        // change camera view
+        ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+        ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+
+        container.scrollTo((ball.x - centerX), (ball.y - centerY))
+
+
+
+
+
+
+        // display main warm
+        data['message'].forEach((el) => {
+            ball.draw(el[0], el[1], 25, ball.color)
+        })
+
+    }
+
+
 };
