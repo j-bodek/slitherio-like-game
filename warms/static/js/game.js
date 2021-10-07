@@ -37,6 +37,7 @@ canvas.addEventListener('mousemove', function (e) {
 canvas.addEventListener('mouseover', function (e) {
     if (!running && len > 0) {
         raf = window.requestAnimationFrame(draw);
+
         running = true;
     }
 });

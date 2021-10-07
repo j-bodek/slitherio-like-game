@@ -3,6 +3,17 @@ let canvas = document.getElementById('box');
 let ctx = canvas.getContext('2d');
 
 
+const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+const chatSocket = new WebSocket(
+    'ws://' +
+    window.location.host +
+    '/ws/chat/' +
+    roomName +
+    '/'
+);
+
+
 let raf;
 let running = false;
 let index = 0;
@@ -191,38 +202,30 @@ function draw() {
     ball.y += ball.vy;
 
 
-    // after eating food
-    // eat_food()
-
-
-    // change camera view
-    ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-    ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
-
-    container.scrollTo((ball.x - centerX), (ball.y - centerY))
-
-
-    // // lose mass logic
-    // if (lose_mass % mass_losing_speed == 0) {
-    //     // subtract one from length
-    //     lose_mass = 1
-    //     len--
-    //     ball.tail.shift()
-    // } else {
-    //     lose_mass++
-    // }
 
 
 
-    // // after hiting border
-    // if (ball.y > canvas.height ||
-    //     ball.y < 0) {
-    //     die()
-    // }
-    // if (ball.x > canvas.width ||
-    //     ball.x < 0) {
-    //     die()
-    // }
+    // lose mass logic
+    if (lose_mass % mass_losing_speed == 0) {
+        // subtract one from length
+        lose_mass = 1
+        len--
+        ball.tail.shift()
+    } else {
+        lose_mass++
+    }
+
+
+
+    // after hiting border
+    if (ball.y > canvas.height ||
+        ball.y < 0) {
+        die()
+    }
+    if (ball.x > canvas.width ||
+        ball.x < 0) {
+        die()
+    }
 
 
 
@@ -240,6 +243,16 @@ chatSocket.onmessage = function (e) {
     data['message'].forEach((el) => {
         ball.draw(el[0], el[1], 25, ball.color)
     })
+
+    // after eating food
+    eat_food()
+
+
+    // // change camera view
+    // ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+    // ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+
+    // container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
     raf = window.requestAnimationFrame(draw);
 };
