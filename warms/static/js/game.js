@@ -31,19 +31,35 @@ canvas.addEventListener('mousemove', function (e) {
         vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
         vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
 
-        if (Math.abs(Math.abs(ball.vx) - Math.abs(vx)) > 0.5 || Math.abs(Math.abs(ball.vy) - Math.abs(vy)) > 0.5) {
-            // ball.vx = vx
-            // ball.vy = vy
-            // console.log(ball.vy == oldvy);
-            chatSocket.send(JSON.stringify({
-                'message': [vx, vy],
-                // 'id': snakeid
-            }));
 
-        }
+
+        // if (Math.abs(Math.abs(ball.vx) - Math.abs(vx)) > 0.5 || Math.abs(Math.abs(ball.vy) - Math.abs(vy)) > 0.5) {
+        //     // ball.vx = vx
+        //     // ball.vy = vy
+        //     // console.log(ball.vy == oldvy);
+
+        //     chatSocket.send(JSON.stringify({
+        //         'message': [vx, vy],
+        //         // 'id': snakeid
+        //     }));
+
+        // }
 
     }
 });
+
+
+
+// window.setInterval(function () {
+
+//     chatSocket.send(JSON.stringify({
+//         'message': [vx, vy],
+//         // 'id': snakeid
+//     }));
+
+// }, 50);
+
+
 
 canvas.addEventListener('mouseover', function (e) {
     if (!running && len > 0) {
