@@ -28,8 +28,19 @@ canvas.addEventListener('mousemove', function (e) {
         let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
         let scale = speed / len
 
-        ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-        ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
+        vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
+        vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
+
+        if (Math.abs(Math.abs(ball.vx) - Math.abs(vx)) > 0.5 || Math.abs(Math.abs(ball.vy) - Math.abs(vy)) > 0.5) {
+            // ball.vx = vx
+            // ball.vy = vy
+            // console.log(ball.vy == oldvy);
+            chatSocket.send(JSON.stringify({
+                'message': [vx, vy],
+                // 'id': snakeid
+            }));
+
+        }
 
     }
 });
@@ -49,7 +60,3 @@ canvas.addEventListener('mouseout', function (e) {
     window.cancelAnimationFrame(raf);
     running = false;
 });
-
-canvas.addEventListener('click', (e) => {
-    console.log(snakeid);
-})

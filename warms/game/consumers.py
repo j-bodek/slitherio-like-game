@@ -52,15 +52,12 @@ class ChatConsumer(WebsocketConsumer):
         data = event['message'][1]
 
         if  self.channel_name == event['message'][0]:
-            message_type = 'sender'
-        else: 
-            message_type = 'receiver'
+            # Send message to WebSocket
+            self.send(text_data=json.dumps({
+                'message': data,
+            }))
       
 
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({
-            'type': message_type,
-            'message': data,
-        }))
+
 
 

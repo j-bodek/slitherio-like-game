@@ -170,33 +170,35 @@ let die = function () {
 
 
 
+chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    ball.vx = data['message'][0]
+    ball.vy = data['message'][1]
+    console.log('hi');
+}
 
 
 function draw() {
 
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     index++
     display_tail()
 
 
     // display shades while speeding
-    // if (speed == 8) {
-    //     ball.tail.forEach((el) => {
-    //         ball.draw(el[0], el[1], 28, ball.shade)
-    //     })
-    // }
+    if (speed == 8) {
+        ball.tail.forEach((el) => {
+            ball.draw(el[0], el[1], 28, ball.shade)
+        })
+    }
 
-    chatSocket.send(JSON.stringify({
-        'message': ball.tail,
-        // 'id': snakeid
-    }));
 
     // display main warm
-    // ball.tail.forEach((el) => {
-    //     ball.draw(el[0], el[1], 25, ball.color)
-    // })
-
-
+    ball.tail.forEach((el) => {
+        ball.draw(el[0], el[1], 25, ball.color)
+    })
 
 
 
@@ -204,7 +206,15 @@ function draw() {
     ball.y += ball.vy;
 
 
+    // after eating food
+    eat_food()
 
+
+    // change camera view
+    ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+    ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+
+    container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
 
     // lose mass logic
@@ -230,142 +240,68 @@ function draw() {
     }
 
 
-
+    raf = window.requestAnimationFrame(draw);
 
 }
 
 
-chatSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
 
-    if (data['type'] == 'sender') {
+// chatSocket.onmessage = function (e) {
 
+//     chatSocket.send(JSON.stringify({
+//         'message': ball.tail,
+//         // 'id': snakeid
+//     }));
 
-        // // display main warm
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     const data = JSON.parse(e.data);
 
-
-
-        // // display shades while speeding
-        // // if (speed == 8) {
-        // //     ball.tail.forEach((el) => {
-        // //         ball.draw(el[0], el[1], 28, ball.shade)
-        // //     })
-        // // }
-
-        // chatSocket.send(JSON.stringify({
-        //     'message': ball.tail,
-        //     // 'id': snakeid
-        // }));
-
-        // // display main warm
-        // // ball.tail.forEach((el) => {
-        // //     ball.draw(el[0], el[1], 25, ball.color)
-        // // })
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-        // data['message'].forEach((el) => {
-        //     ball.draw(el[0], el[1], 25, ball.color)
-        // })
-
-        // // after eating food
-        // eat_food()
+//     index++
+//     display_tail()
 
 
-        // // change camera view
-        // ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-        // ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+//     // display shades while speeding
+//     if (speed == 8) {
+//         ball.tail.forEach((el) => {
+//             ball.draw(el[0], el[1], 28, ball.shade)
+//         })
+//     }
 
-        // container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
-        // index++
-        // display_tail()
+//     // display main warm
+//     ball.tail.forEach((el) => {
+//         ball.draw(el[0], el[1], 25, ball.color)
+//     })
 
 
 
-        // ball.x += ball.vx;
-        // ball.y += ball.vy;
+//     ball.x += ball.vx;
+//     ball.y += ball.vy;
 
 
+//     // after eating food
+//     eat_food()
 
 
+//     // change camera view
+//     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+//     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
 
-        // // lose mass logic
-        // if (lose_mass % mass_losing_speed == 0) {
-        //     // subtract one from length
-        //     lose_mass = 1
-        //     len--
-        //     ball.tail.shift()
-        // } else {
-        //     lose_mass++
-        // }
-
-
-
-        // // after hiting border
-        // if (ball.y > canvas.height ||
-        //     ball.y < 0) {
-        //     die()
-        // }
-        // if (ball.x > canvas.width ||
-        //     ball.x < 0) {
-        //     die()
-        // }
-
-
-
-    } else {
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
-        index++
-        display_tail()
-
-
-        // display shades while speeding
-        if (speed == 8) {
-            ball.tail.forEach((el) => {
-                ball.draw(el[0], el[1], 28, ball.shade)
-            })
-        }
-
-
-        // display main warm
-        ball.tail.forEach((el) => {
-            ball.draw(el[0], el[1], 25, ball.color)
-        })
-
-        chatSocket.send(JSON.stringify({
-            'message': ball.tail,
-            // 'id': snakeid
-        }));
-
-        ball.x += ball.vx;
-        ball.y += ball.vy;
-
-
-        // after eating food
-        eat_food()
-
-
-        // change camera view
-        ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-        ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
-
-        container.scrollTo((ball.x - centerX), (ball.y - centerY))
+//     container.scrollTo((ball.x - centerX), (ball.y - centerY))
 
 
 
 
 
 
-        // display main warm
-        data['message'].forEach((el) => {
-            ball.draw(el[0], el[1], 25, ball.color)
-        })
-
-    }
+//     // // display main warm
+//     // data['message'].forEach((el) => {
+//     //     ball.draw(el[0], el[1], 25, ball.color)
+//     // })
 
 
-};
+
+
+// };
