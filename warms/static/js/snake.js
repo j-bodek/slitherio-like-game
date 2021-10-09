@@ -170,12 +170,7 @@ let die = function () {
 
 
 
-chatSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    ball.vx = data['message'][0]
-    ball.vy = data['message'][1]
-    console.log('hi');
-}
+
 
 
 function draw() {

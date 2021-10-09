@@ -50,20 +50,31 @@ canvas.addEventListener('mousemove', function (e) {
 
 
 
-// window.setInterval(function () {
 
-//     chatSocket.send(JSON.stringify({
-//         'message': [vx, vy],
-//         // 'id': snakeid
-//     }));
+// after receiving another message change warm moveing direction and send another message
+chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    ball.vx = data['message'][0]
+    ball.vy = data['message'][1]
 
-// }, 50);
+    chatSocket.send(JSON.stringify({
+        'message': [vx, vy],
+    }));
+
+}
+
+
 
 
 
 canvas.addEventListener('mouseover', function (e) {
     if (!running && len > 0) {
         raf = window.requestAnimationFrame(draw);
+
+        // on mouse over send first 'starting position message'
+        chatSocket.send(JSON.stringify({
+            'message': [0, 0],
+        }));
 
         running = true;
     }
