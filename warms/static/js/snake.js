@@ -14,19 +14,7 @@ const chatSocket = new WebSocket(
 );
 
 
-let raf;
-let running = false;
-let index = 0;
-let lose_mass = 1;
-let len = 10;
-let speed = 3;
-let mass_losing_speed = 100;
-let warmParts = []
-let snakeid = ''
 
-
-let centerX = window.innerWidth / 2;
-let centerY = window.innerHeight / 2;
 
 
 
@@ -73,76 +61,76 @@ class warmPart {
 
 
 
-let ball = {
-    x: centerX,
-    y: centerY,
-    screenX: 0,
-    screenY: 0,
-    vx: 0,
-    vy: 0,
-    radius: 25,
-    color: '#e9c46a',
-    shade: '#F2DCA6',
-    tail: [],
+// let ball = {
+//     x: centerX,
+//     y: centerY,
+//     screenX: 0,
+//     screenY: 0,
+//     vx: 0,
+//     vy: 0,
+//     radius: 25,
+//     color: '#e9c46a',
+//     shade: '#F2DCA6',
+//     tail: [],
 
 
 
-    draw: function (x, y, radius, color) {
+//     draw: function (x, y, radius, color) {
 
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fillStyle = color;
-        ctx.fill();
+//         ctx.beginPath();
+//         ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+//         ctx.closePath();
+//         ctx.fillStyle = color;
+//         ctx.fill();
 
-    },
+//     },
 
-};
-
-
-
-let leave_mass = function () {
-    ball.tail.forEach((e) => {
-        let x = Math.floor(e[0] + (Math.random() * 40));
-        let y = Math.floor(e[1] + (Math.random() * 40));
-        let radius = (2 + Math.floor(Math.random() * 4));
-        let color = 'red';
-        // display food
-        generate_point(x, y, radius, color)
-    })
-}
+// };
 
 
 
+// let leave_mass = function () {
+//     ball.tail.forEach((e) => {
+//         let x = Math.floor(e[0] + (Math.random() * 40));
+//         let y = Math.floor(e[1] + (Math.random() * 40));
+//         let radius = (2 + Math.floor(Math.random() * 4));
+//         let color = 'red';
+//         // display food
+//         generate_point(x, y, radius, color)
+//     })
+// }
 
-let display_tail = function () {
-    if (ball.tail.length < len) {
-        ball.tail.push([ball.x, ball.y])
-        index = 0
-    } else if (ball.tail.length == len) {
-        ball.tail.shift()
-        ball.tail.push([ball.x, ball.y])
-        index = 0
-    }
-}
 
 
-let eat_food = function () {
-    food_coordinates.forEach((food) => {
-        if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
-            // remove food
-            let index = food_coordinates.indexOf(food);
-            food_coordinates.splice(index, 1)
-            ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
-            // make snake longer
-            len++
-            // generate new point coordinates
-            let [x, y, radius, color] = generateCoorginates()
-            // display point
-            generate_point(x, y, radius, color)
-        }
-    })
-}
+
+// let display_tail = function () {
+//     if (ball.tail.length < len) {
+//         ball.tail.push([ball.x, ball.y])
+//         index = 0
+//     } else if (ball.tail.length == len) {
+//         ball.tail.shift()
+//         ball.tail.push([ball.x, ball.y])
+//         index = 0
+//     }
+// }
+
+
+// let eat_food = function () {
+//     food_coordinates.forEach((food) => {
+//         if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
+//             // remove food
+//             let index = food_coordinates.indexOf(food);
+//             food_coordinates.splice(index, 1)
+//             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+//             // make snake longer
+//             len++
+//             // generate new point coordinates
+//             let [x, y, radius, color] = generateCoorginates()
+//             // display point
+//             generate_point(x, y, radius, color)
+//         }
+//     })
+// }
 
 let createparts = function () {
     for (let i = 0; i < len; i++) {
@@ -157,87 +145,294 @@ let createparts = function () {
 }
 
 
-let die = function () {
+// let die = function () {
 
-    len > 0 ? createparts() : 0;
-    len = 0
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     len > 0 ? createparts() : 0;
+//     len = 0
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    warmParts.forEach((part) => {
-        part.update()
-    })
+//     warmParts.forEach((part) => {
+//         part.update()
+//     })
+// }
+
+
+
+
+
+
+// function draw() {
+
+
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+//     index++
+//     display_tail()
+
+
+//     // display shades while speeding
+//     if (speed == 8) {
+//         ball.tail.forEach((el) => {
+//             ball.draw(el[0], el[1], 28, ball.shade)
+//         })
+//     }
+
+
+//     // display main warm
+//     ball.tail.forEach((el) => {
+//         ball.draw(el[0], el[1], 25, ball.color)
+//     })
+
+
+
+//     ball.x += ball.vx;
+//     ball.y += ball.vy;
+
+
+//     // after eating food
+//     eat_food()
+
+
+//     // change camera view
+//     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
+//     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+
+//     container.scrollTo((ball.x - centerX), (ball.y - centerY))
+
+
+//     // lose mass logic
+//     if (lose_mass % mass_losing_speed == 0) {
+//         // subtract one from length
+//         lose_mass = 1
+//         len--
+//         ball.tail.shift()
+//     } else {
+//         lose_mass++
+//     }
+
+
+
+//     // after hiting border
+//     if (ball.y > canvas.height ||
+//         ball.y < 0) {
+//         die()
+//     }
+//     if (ball.x > canvas.width ||
+//         ball.x < 0) {
+//         die()
+//     }
+
+
+//     raf = window.requestAnimationFrame(draw);
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+display_tail = function (Snake) {
+    if (Snake.tail.length < Snake.len) {
+        Snake.tail.push([Snake.x, Snake.y])
+        Snake.index = 0
+    } else if (Snake.tail.length == Snake.len) {
+        Snake.tail.shift()
+        Snake.tail.push([Snake.x, Snake.y])
+        Snake.index = 0
+    }
+}
+
+draw_ball = function (x, y, radius, color) {
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+
 }
 
 
 
 
+// eat_food() {
+//     food_coordinates.forEach((food) => {
+//         if (Math.sqrt(Math.pow(food['x'] - this.x, 2) + Math.pow(food['y'] - this.y, 2)) < 25) {
+//             // remove food
+//             let food_index = food_coordinates.indexOf(food);
+//             food_coordinates.splice(food_index, 1)
+//             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+//             // make snake longer
+//             this.len++
+//             // generate new point coordinates
+//             let [x, y, radius, color] = generateCoorginates()
+//             // display point
+//             generate_point(x, y, radius, color)
+//         }
+//     })
+// }
+
+// die() {
+
+//     this.len > 0 ? createparts() : 0;
+//     this.len = 0
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+//     warmParts.forEach((part) => {
+//         part.update()
+//     })
+// }
 
 
-function draw() {
+
+draw = function (Snake) {
 
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    index++
-    display_tail()
+    Snake.index++
+    display_tail(Snake)
 
 
     // display shades while speeding
-    if (speed == 8) {
-        ball.tail.forEach((el) => {
-            ball.draw(el[0], el[1], 28, ball.shade)
-        })
-    }
+    // if (Snake.speed == 8) {
+    //     Snake.tail.forEach((el) => {
+    //         Snake.draw_ball(el[0], el[1], 28, Snake.shade)
+    //     })
+    // }
 
 
     // display main warm
-    ball.tail.forEach((el) => {
-        ball.draw(el[0], el[1], 25, ball.color)
+    // console.log(Snake.tail);
+
+    Snake.tail.forEach((el) => {
+        draw_ball(el[0], el[1], 28, Snake.shade)
     })
 
 
 
-    ball.x += ball.vx;
-    ball.y += ball.vy;
+    Snake.x += Snake.vx;
+    Snake.y += Snake.vy;
 
 
     // after eating food
-    eat_food()
+    // this.eat_food()
 
 
     // change camera view
-    ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-    ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
+    // this.screenX = (this.x < this.centerX) ? 0 : (this.x > (2000 - this.centerX)) ? (2000 - (2 * this.centerX)) : (this.x - this.centerX);
+    // this.screenY = (this.y < this.centerY) ? 0 : (this.y > (2000 - this.centerY)) ? (2000 - (2 * this.centerY)) : (this.y - this.centerY);
 
-    container.scrollTo((ball.x - centerX), (ball.y - centerY))
-
-
-    // lose mass logic
-    if (lose_mass % mass_losing_speed == 0) {
-        // subtract one from length
-        lose_mass = 1
-        len--
-        ball.tail.shift()
-    } else {
-        lose_mass++
-    }
+    // container.scrollTo((this.x - this.centerX), (this.y - this.centerY))
 
 
+    // // lose mass logic
+    // if (this.lose_mass % this.mass_losing_speed == 0) {
+    //     // subtract one from length
+    //     this.lose_mass = 1
+    //     this.len--
+    //     this.tail.shift()
+    // } else {
+    //     this.lose_mass++
+    // }
 
-    // after hiting border
-    if (ball.y > canvas.height ||
-        ball.y < 0) {
-        die()
-    }
-    if (ball.x > canvas.width ||
-        ball.x < 0) {
-        die()
-    }
 
 
-    raf = window.requestAnimationFrame(draw);
+    // // after hiting border
+    // if (this.y > canvas.height ||
+    //     this.y < 0) {
+    //     this.die()
+    // }
+    // if (this.x > canvas.width ||
+    //     this.x < 0) {
+    //     this.die()
+    // }
+
+
+    Snake.raf = window.requestAnimationFrame(draw);
 
 }
+
+
+
+
+
+
+
+class Warm {
+
+
+    constructor() {
+        this.raf;
+        this.running = false;
+        this.index = 0;
+        this.lose_mass = 1;
+        this.len = 10;
+        this.speed = 3;
+        this.mass_losing_speed = 100;
+        this.warmParts = []
+
+
+
+        this.centerX = window.innerWidth / 2;
+        this.centerY = window.innerHeight / 2;
+
+        this.x = this.centerX;
+        this.y = this.centerY;
+        this.screenX = 0;
+        this.screenY = 0;
+        this.vx = 0;
+        this.vy = 0;
+        this.radius = 25;
+        this.color = '#e9c46a';
+        this.shade = '#F2DCA6';
+        this.tail = [];
+    }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

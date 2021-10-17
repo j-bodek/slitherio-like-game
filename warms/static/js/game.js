@@ -1,35 +1,37 @@
-canvas.addEventListener('mousedown', (e) => {
-    if (running && len > 0) {
-        speed = 8
-        mass_losing_speed = 10
-        let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-        let scale = speed / len
+const Snake = new Warm()
+console.log(Snake);
+// canvas.addEventListener('mousedown', (e) => {
+//     if (running && len > 0) {
+//         speed = 8
+//         mass_losing_speed = 10
+//         let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
+//         let scale = speed / len
 
-        ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-        ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
-    }
-})
+//         ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
+//         ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
+//     }
+// })
 
-canvas.addEventListener('mouseup', (e) => {
-    if (running && len > 0) {
-        speed = 3
-        mass_losing_speed = 100
-        let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-        let scale = speed / len
+// canvas.addEventListener('mouseup', (e) => {
+//     if (running && len > 0) {
+//         speed = 3
+//         mass_losing_speed = 100
+//         let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
+//         let scale = speed / len
 
-        ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-        ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
-    }
-})
+//         ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
+//         ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
+//     }
+// })
 
-// on mouse move change angle 
+// // on mouse move change angle 
 canvas.addEventListener('mousemove', function (e) {
-    if (running && len > 0) {
-        let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-        let scale = speed / len
+    if (Snake.running && Snake.len > 0) {
+        let len = Math.sqrt(Math.pow(Snake.tail.at(-1)[0] - (e.clientX + Snake.screenX), 2) + Math.pow(Snake.tail.at(-1)[1] - (e.clientY + Snake.screenY), 2))
+        let scale = Snake.speed / len
 
-        vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-        vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
+        vx = ((e.clientX + Snake.screenX - Snake.tail.at(-1)[0]) * scale)
+        vy = ((e.clientY + Snake.screenY - Snake.tail.at(-1)[1]) * scale)
 
 
 
@@ -53,9 +55,11 @@ canvas.addEventListener('mousemove', function (e) {
 
 // after receiving another message change warm moveing direction and send another message
 chatSocket.onmessage = function (e) {
+    console.log('hello');
     const data = JSON.parse(e.data);
-    ball.vx = data['message'][0]
-    ball.vy = data['message'][1]
+    Snake.vx = data['message'][0]
+    Snake.vy = data['message'][1]
+
 
     chatSocket.send(JSON.stringify({
         'message': [vx, vy],
@@ -68,15 +72,18 @@ chatSocket.onmessage = function (e) {
 
 
 canvas.addEventListener('mouseover', function (e) {
-    if (!running && len > 0) {
-        raf = window.requestAnimationFrame(draw);
+    if (!Snake.running && Snake.len > 0) {
+
+        // window.requestAnimationFrame(Snake.draw);
+        Snake.raf = window.requestAnimationFrame(draw);
+
 
         // on mouse over send first 'starting position message'
         chatSocket.send(JSON.stringify({
             'message': [0, 0],
         }));
 
-        running = true;
+        Snake.running = true;
     }
 });
 
@@ -84,6 +91,6 @@ canvas.addEventListener('mouseover', function (e) {
 
 
 canvas.addEventListener('mouseout', function (e) {
-    window.cancelAnimationFrame(raf);
-    running = false;
+    clearInterval(snakeInterval);
+    Snake.running = false;
 });
