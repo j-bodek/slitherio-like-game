@@ -55,7 +55,7 @@ canvas.addEventListener('mousemove', function (e) {
 
 // after receiving another message change warm moveing direction and send another message
 chatSocket.onmessage = function (e) {
-    console.log('hello');
+
     const data = JSON.parse(e.data);
     Snake.vx = data['message'][0]
     Snake.vy = data['message'][1]
@@ -75,7 +75,9 @@ canvas.addEventListener('mouseover', function (e) {
     if (!Snake.running && Snake.len > 0) {
 
         // window.requestAnimationFrame(Snake.draw);
-        Snake.raf = window.requestAnimationFrame(draw);
+        Snake.raf = window.requestAnimationFrame(function () {
+            draw(Snake)
+        });
 
 
         // on mouse over send first 'starting position message'
@@ -91,6 +93,6 @@ canvas.addEventListener('mouseover', function (e) {
 
 
 canvas.addEventListener('mouseout', function (e) {
-    clearInterval(snakeInterval);
+    window.cancelAnimationFrame(Snake.raf);
     Snake.running = false;
 });

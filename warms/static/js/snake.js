@@ -246,10 +246,6 @@ let createparts = function () {
 
 
 
-
-
-
-
 display_tail = function (Snake) {
     if (Snake.tail.length < Snake.len) {
         Snake.tail.push([Snake.x, Snake.y])
@@ -335,11 +331,11 @@ draw = function (Snake) {
 
 
     // after eating food
-    // this.eat_food()
+    // Snake.eat_food()
 
 
     // change camera view
-    // this.screenX = (this.x < this.centerX) ? 0 : (this.x > (2000 - this.centerX)) ? (2000 - (2 * this.centerX)) : (this.x - this.centerX);
+    // Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - this.centerX)) ? (2000 - (2 * this.centerX)) : (this.x - this.centerX);
     // this.screenY = (this.y < this.centerY) ? 0 : (this.y > (2000 - this.centerY)) ? (2000 - (2 * this.centerY)) : (this.y - this.centerY);
 
     // container.scrollTo((this.x - this.centerX), (this.y - this.centerY))
@@ -368,9 +364,15 @@ draw = function (Snake) {
     // }
 
 
-    Snake.raf = window.requestAnimationFrame(draw);
+    Snake.raf = window.requestAnimationFrame(function () {
+        draw(Snake)
+    });
 
 }
+
+
+
+
 
 
 
