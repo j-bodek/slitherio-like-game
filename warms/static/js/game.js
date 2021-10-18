@@ -1,28 +1,18 @@
-const Snake = new Warm()
-console.log(Snake);
-// canvas.addEventListener('mousedown', (e) => {
-//     if (running && len > 0) {
-//         speed = 8
-//         mass_losing_speed = 10
-//         let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-//         let scale = speed / len
+let Snake = new Warm()
 
-//         ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-//         ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
-//     }
-// })
+canvas.addEventListener('mousedown', (e) => {
+    if (Snake.running && Snake.len > 0) {
+        Snake.speed = 8
+        Snake.mass_losing_speed = 10
+    }
+})
 
-// canvas.addEventListener('mouseup', (e) => {
-//     if (running && len > 0) {
-//         speed = 3
-//         mass_losing_speed = 100
-//         let len = Math.sqrt(Math.pow(ball.tail.at(-1)[0] - (e.clientX + ball.screenX), 2) + Math.pow(ball.tail.at(-1)[1] - (e.clientY + ball.screenY), 2))
-//         let scale = speed / len
-
-//         ball.vx = ((e.clientX + ball.screenX - ball.tail.at(-1)[0]) * scale)
-//         ball.vy = ((e.clientY + ball.screenY - ball.tail.at(-1)[1]) * scale)
-//     }
-// })
+canvas.addEventListener('mouseup', (e) => {
+    if (Snake.running && Snake.len > 0) {
+        Snake.speed = 3
+        Snake.mass_losing_speed = 100
+    }
+})
 
 // // on mouse move change angle 
 canvas.addEventListener('mousemove', function (e) {
@@ -33,19 +23,6 @@ canvas.addEventListener('mousemove', function (e) {
         vx = ((e.clientX + Snake.screenX - Snake.tail.at(-1)[0]) * scale)
         vy = ((e.clientY + Snake.screenY - Snake.tail.at(-1)[1]) * scale)
 
-
-
-        // if (Math.abs(Math.abs(ball.vx) - Math.abs(vx)) > 0.5 || Math.abs(Math.abs(ball.vy) - Math.abs(vy)) > 0.5) {
-        //     // ball.vx = vx
-        //     // ball.vy = vy
-        //     // console.log(ball.vy == oldvy);
-
-        //     chatSocket.send(JSON.stringify({
-        //         'message': [vx, vy],
-        //         // 'id': snakeid
-        //     }));
-
-        // }
 
     }
 });

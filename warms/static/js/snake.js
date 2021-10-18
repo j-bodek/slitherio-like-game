@@ -132,12 +132,12 @@ class warmPart {
 //     })
 // }
 
-let createparts = function () {
-    for (let i = 0; i < len; i++) {
+let createparts = function (Snake) {
+    for (let i = 0; i < Snake.len; i++) {
 
-        warmParts.push(new warmPart(ball.x, ball.y,
-            (speed / 3) * ((Math.random() * 8) - 4),
-            (speed / 3) * ((Math.random() * 8) - 4),
+        Snake.warmParts.push(new warmPart(Snake.x, Snake.y,
+            (Snake.speed / 3) * ((Math.random() * 8) - 4),
+            (Snake.speed / 3) * ((Math.random() * 8) - 4),
             colors[(Math.round(Math.random() * 5))],
             (5 + Math.floor(Math.random() * 5))
         ))
@@ -270,33 +270,33 @@ draw_ball = function (x, y, radius, color) {
 
 
 
-// eat_food() {
-//     food_coordinates.forEach((food) => {
-//         if (Math.sqrt(Math.pow(food['x'] - this.x, 2) + Math.pow(food['y'] - this.y, 2)) < 25) {
-//             // remove food
-//             let food_index = food_coordinates.indexOf(food);
-//             food_coordinates.splice(food_index, 1)
-//             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
-//             // make snake longer
-//             this.len++
-//             // generate new point coordinates
-//             let [x, y, radius, color] = generateCoorginates()
-//             // display point
-//             generate_point(x, y, radius, color)
-//         }
-//     })
-// }
+eat_food = function (Snake) {
+    food_coordinates.forEach((food) => {
+        if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25) {
+            // remove food
+            let food_index = food_coordinates.indexOf(food);
+            food_coordinates.splice(food_index, 1)
+            ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
+            // make snake longer
+            Snake.len++
+            // generate new point coordinates
+            let [x, y, radius, color] = generateCoorginates()
+            // display point
+            generate_point(x, y, radius, color)
+        }
+    })
+}
 
-// die() {
+die = function (Snake) {
 
-//     this.len > 0 ? createparts() : 0;
-//     this.len = 0
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    Snake.len > 0 ? createparts(Snake) : 0;
+    Snake.len = 0
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-//     warmParts.forEach((part) => {
-//         part.update()
-//     })
-// }
+    Snake.warmParts.forEach((part) => {
+        part.update()
+    })
+}
 
 
 
@@ -331,37 +331,37 @@ draw = function (Snake) {
 
 
     // after eating food
-    // Snake.eat_food()
+    eat_food(Snake)
 
 
     // change camera view
-    // Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - this.centerX)) ? (2000 - (2 * this.centerX)) : (this.x - this.centerX);
-    // this.screenY = (this.y < this.centerY) ? 0 : (this.y > (2000 - this.centerY)) ? (2000 - (2 * this.centerY)) : (this.y - this.centerY);
+    Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - Snake.centerX)) ? (2000 - (2 * Snake.centerX)) : (Snake.x - Snake.centerX);
+    Snake.screenY = (Snake.y < Snake.centerY) ? 0 : (Snake.y > (2000 - Snake.centerY)) ? (2000 - (2 * Snake.centerY)) : (Snake.y - Snake.centerY);
 
-    // container.scrollTo((this.x - this.centerX), (this.y - this.centerY))
+    container.scrollTo((Snake.x - Snake.centerX), (Snake.y - Snake.centerY))
 
 
     // // lose mass logic
-    // if (this.lose_mass % this.mass_losing_speed == 0) {
-    //     // subtract one from length
-    //     this.lose_mass = 1
-    //     this.len--
-    //     this.tail.shift()
-    // } else {
-    //     this.lose_mass++
-    // }
+    if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
+        // subtract one from length
+        Snake.lose_mass = 1
+        Snake.len--
+        Snake.tail.shift()
+    } else {
+        Snake.lose_mass++
+    }
 
 
 
     // // after hiting border
-    // if (this.y > canvas.height ||
-    //     this.y < 0) {
-    //     this.die()
-    // }
-    // if (this.x > canvas.width ||
-    //     this.x < 0) {
-    //     this.die()
-    // }
+    if (Snake.y > canvas.height ||
+        Snake.y < 0) {
+        die(Snake)
+    }
+    if (Snake.x > canvas.width ||
+        Snake.x < 0) {
+        die(Snake)
+    }
 
 
     Snake.raf = window.requestAnimationFrame(function () {
@@ -409,10 +409,6 @@ class Warm {
         this.shade = '#F2DCA6';
         this.tail = [];
     }
-
-
-
-
 
 }
 
