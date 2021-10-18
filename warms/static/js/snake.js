@@ -300,72 +300,75 @@ die = function (Snake) {
 
 
 
-draw = function (Snake) {
+draw = function (Snake_player, Snake_oponent) {
 
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    Snake.index++
-    display_tail(Snake)
+    [Snake_player, Snake_oponent].forEach((Snake) => {
+        Snake.index++
+        display_tail(Snake)
 
 
-    // display shades while speeding
-    // if (Snake.speed == 8) {
-    //     Snake.tail.forEach((el) => {
-    //         Snake.draw_ball(el[0], el[1], 28, Snake.shade)
-    //     })
-    // }
+        // display shades while speeding
+        // if (Snake.speed == 8) {
+        //     Snake.tail.forEach((el) => {
+        //         Snake.draw_ball(el[0], el[1], 28, Snake.shade)
+        //     })
+        // }
 
 
-    // display main warm
-    // console.log(Snake.tail);
+        // display main warm
+        // console.log(Snake.tail);
 
-    Snake.tail.forEach((el) => {
-        draw_ball(el[0], el[1], 28, Snake.shade)
+        Snake.tail.forEach((el) => {
+            draw_ball(el[0], el[1], 28, Snake.shade)
+        })
+
+
+
+        Snake.x += Snake.vx;
+        Snake.y += Snake.vy;
+
+
+        // // after eating food
+        // eat_food(Snake)
+
+
+        // // change camera view
+        // // Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - Snake.centerX)) ? (2000 - (2 * Snake.centerX)) : (Snake.x - Snake.centerX);
+        // // Snake.screenY = (Snake.y < Snake.centerY) ? 0 : (Snake.y > (2000 - Snake.centerY)) ? (2000 - (2 * Snake.centerY)) : (Snake.y - Snake.centerY);
+
+        // // container.scrollTo((Snake.x - Snake.centerX), (Snake.y - Snake.centerY))
+
+
+        // // // lose mass logic
+        // if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
+        //     // subtract one from length
+        //     Snake.lose_mass = 1
+        //     Snake.len--
+        //     Snake.tail.shift()
+        // } else {
+        //     Snake.lose_mass++
+        // }
+
+
+
+        // // // after hiting border
+        // if (Snake.y > canvas.height ||
+        //     Snake.y < 0) {
+        //     die(Snake)
+        // }
+        // if (Snake.x > canvas.width ||
+        //     Snake.x < 0) {
+        //     die(Snake)
+        // }
     })
 
 
 
-    Snake.x += Snake.vx;
-    Snake.y += Snake.vy;
-
-
-    // after eating food
-    eat_food(Snake)
-
-
-    // change camera view
-    Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - Snake.centerX)) ? (2000 - (2 * Snake.centerX)) : (Snake.x - Snake.centerX);
-    Snake.screenY = (Snake.y < Snake.centerY) ? 0 : (Snake.y > (2000 - Snake.centerY)) ? (2000 - (2 * Snake.centerY)) : (Snake.y - Snake.centerY);
-
-    container.scrollTo((Snake.x - Snake.centerX), (Snake.y - Snake.centerY))
-
-
-    // // lose mass logic
-    if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
-        // subtract one from length
-        Snake.lose_mass = 1
-        Snake.len--
-        Snake.tail.shift()
-    } else {
-        Snake.lose_mass++
-    }
-
-
-
-    // // after hiting border
-    if (Snake.y > canvas.height ||
-        Snake.y < 0) {
-        die(Snake)
-    }
-    if (Snake.x > canvas.width ||
-        Snake.x < 0) {
-        die(Snake)
-    }
-
-
-    Snake.raf = window.requestAnimationFrame(function () {
-        draw(Snake)
+    raf = window.requestAnimationFrame(function () {
+        draw(Snake_player, Snake_oponent);
     });
 
 }
