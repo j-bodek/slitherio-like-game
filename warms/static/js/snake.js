@@ -295,6 +295,7 @@ die = function (Snake) {
 }
 
 
+
 draw = function (Snake_player, Snake_oponent) {
 
 
@@ -319,6 +320,7 @@ draw = function (Snake_player, Snake_oponent) {
         Snake.tail.forEach((el) => {
             draw_ball(el[0], el[1], 28, Snake.color)
         })
+
 
         Snake.x += Snake.vx;
         Snake.y += Snake.vy;
@@ -360,7 +362,6 @@ draw = function (Snake_player, Snake_oponent) {
         // }
     })
 
-    i++
 
     raf = window.requestAnimationFrame(function () {
         draw(Snake_player, Snake_oponent);
@@ -381,7 +382,7 @@ draw = function (Snake_player, Snake_oponent) {
 class Warm {
 
 
-    constructor(Snake_color, Snake_type, start_x, start_y) {
+    constructor(Snake_color, Snake_type, start_coordinates) {
         this.raf;
         this.type = Snake_type
         this.running = false;
@@ -397,8 +398,8 @@ class Warm {
         this.centerX = window.innerWidth / 2;
         this.centerY = window.innerHeight / 2;
 
-        this.x = 100;
-        this.y = 100;
+        this.x = start_coordinates;
+        this.y = start_coordinates;
         this.screenX = 0;
         this.screenY = 0;
         this.vx = 0;

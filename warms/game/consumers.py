@@ -6,9 +6,11 @@ import random
 from .food import generate_food_coordinates
 
 food_coordinates = generate_food_coordinates()
+player_coordinates = []
 
 class ChatConsumer(WebsocketConsumer):
     players = []
+    
     
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -39,6 +41,7 @@ class ChatConsumer(WebsocketConsumer):
         data = json.loads(text_data)
         message = [self.channel_name,data['message']]
         if message not in self.players: self.players.append(message)
+        if not player_coordinates: player_coordinates.append([self.channel_name, 100, 500])
         
         if len(self.players) == 2:
             # Send message to room group
@@ -60,13 +63,16 @@ class ChatConsumer(WebsocketConsumer):
         receiver = data[0] if data[0][0] != self.channel_name else data[1]
         sender = data[0] if data[0][0] == self.channel_name else data[1]
 
+        coordinates = [player_coordinates[0][1],player_coordinates[0][2]] if self.channel_name == player_coordinates[0][0] else [player_coordinates[0][2],player_coordinates[0][1]]
+
         food_type = event['food']
         food_message = food_coordinates if food_type == 'generate' else []
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'sender': sender[1],
             'receiver': receiver[1],
-            'food': food_message
+            'food': food_message,
+            'player_coordinates':coordinates
         }))
       
 

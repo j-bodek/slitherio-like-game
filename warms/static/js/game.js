@@ -1,18 +1,18 @@
-let Snake_player = new Warm('#e9c46a', 'player')
-let Snake_oponent = new Warm('#2a9d8f', 'oponent')
+let Snake_player;
+let Snake_oponent;
 let running = false
 let vx = 0;
 let vy = 0;
 
 canvas.addEventListener('mousedown', (e) => {
-    if (running) {
+    if (running && Snake_player && Snake_oponent) {
         Snake_player.speed = 8
         Snake_player.mass_losing_speed = 10
     }
 })
 
 canvas.addEventListener('mouseup', (e) => {
-    if (running) {
+    if (running && Snake_player && Snake_oponent) {
         Snake_player.speed = 3
         Snake_player.mass_losing_speed = 100
     }
@@ -20,7 +20,7 @@ canvas.addEventListener('mouseup', (e) => {
 
 // // // on mouse move change angle 
 canvas.addEventListener('mousemove', function (e) {
-    if (running) {
+    if (running && Snake_player && Snake_oponent) {
         let len = Math.sqrt(Math.pow(Snake_player.tail.at(-1)[0] - (e.clientX + Snake_player.screenX), 2) + Math.pow(Snake_player.tail.at(-1)[1] - (e.clientY + Snake_player.screenY), 2))
         let scale = Snake_player.speed / len
 
@@ -77,6 +77,9 @@ chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
 
     if (!running) {
+        Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0])
+        Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1])
+
         Snake_player.raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
         });
