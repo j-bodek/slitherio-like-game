@@ -272,7 +272,7 @@ draw_ball = function (x, y, radius, color) {
 
 eat_food = function (Snake) {
     food_coordinates.forEach((food) => {
-        if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25) {
+        if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25 && Snake.type == 'player') {
             // remove food
             let food_index = food_coordinates.indexOf(food);
             food_coordinates.splice(food_index, 1)
@@ -311,18 +311,18 @@ draw = function (Snake_player, Snake_oponent) {
 
 
         // display shades while speeding
-        // if (Snake.speed == 8) {
-        //     Snake.tail.forEach((el) => {
-        //         Snake.draw_ball(el[0], el[1], 28, Snake.shade)
-        //     })
-        // }
+        if (Snake.speed == 8) {
+            Snake.tail.forEach((el) => {
+                draw_ball(el[0], el[1], 28, Snake.shade)
+            })
+        }
 
 
         // display main warm
         // console.log(Snake.tail);
 
         Snake.tail.forEach((el) => {
-            draw_ball(el[0], el[1], 28, Snake.shade)
+            draw_ball(el[0], el[1], 28, Snake.color)
         })
 
 
@@ -332,25 +332,27 @@ draw = function (Snake_player, Snake_oponent) {
 
 
         // // after eating food
-        // eat_food(Snake)
+        eat_food(Snake)
 
 
         // // change camera view
-        // // Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - Snake.centerX)) ? (2000 - (2 * Snake.centerX)) : (Snake.x - Snake.centerX);
-        // // Snake.screenY = (Snake.y < Snake.centerY) ? 0 : (Snake.y > (2000 - Snake.centerY)) ? (2000 - (2 * Snake.centerY)) : (Snake.y - Snake.centerY);
+        if (Snake.type == 'player') {
+            Snake.screenX = (Snake.x < Snake.centerX) ? 0 : (Snake.x > (2000 - Snake.centerX)) ? (2000 - (2 * Snake.centerX)) : (Snake.x - Snake.centerX);
+            Snake.screenY = (Snake.y < Snake.centerY) ? 0 : (Snake.y > (2000 - Snake.centerY)) ? (2000 - (2 * Snake.centerY)) : (Snake.y - Snake.centerY);
 
-        // // container.scrollTo((Snake.x - Snake.centerX), (Snake.y - Snake.centerY))
+            container.scrollTo((Snake.x - Snake.centerX), (Snake.y - Snake.centerY))
+        }
 
 
         // // // lose mass logic
-        // if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
-        //     // subtract one from length
-        //     Snake.lose_mass = 1
-        //     Snake.len--
-        //     Snake.tail.shift()
-        // } else {
-        //     Snake.lose_mass++
-        // }
+        if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
+            // subtract one from length
+            Snake.lose_mass = 1
+            Snake.len--
+            Snake.tail.shift()
+        } else {
+            Snake.lose_mass++
+        }
 
 
 
@@ -386,8 +388,9 @@ draw = function (Snake_player, Snake_oponent) {
 class Warm {
 
 
-    constructor() {
+    constructor(Snake_color, Snake_type) {
         this.raf;
+        this.type = Snake_type
         this.running = false;
         this.index = 0;
         this.lose_mass = 1;
@@ -408,7 +411,7 @@ class Warm {
         this.vx = 0;
         this.vy = 0;
         this.radius = 25;
-        this.color = '#e9c46a';
+        this.color = Snake_color;
         this.shade = '#F2DCA6';
         this.tail = [];
     }

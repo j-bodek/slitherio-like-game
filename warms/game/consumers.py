@@ -39,7 +39,6 @@ class ChatConsumer(WebsocketConsumer):
         if message not in players: players.append(message)
         
         if len(players) == 2:
-            print('hi')
             # Send message to room group
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,

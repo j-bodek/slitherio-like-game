@@ -1,22 +1,22 @@
-let Snake_player = new Warm()
-let Snake_oponent = new Warm()
+let Snake_player = new Warm('#e9c46a', 'player')
+let Snake_oponent = new Warm('#2a9d8f', 'oponent')
 let running = false
 let vx = 0;
 let vy = 0;
 
-// canvas.addEventListener('mousedown', (e) => {
-//     if (Snake.running && Snake.len > 0) {
-//         Snake.speed = 8
-//         Snake.mass_losing_speed = 10
-//     }
-// })
+canvas.addEventListener('mousedown', (e) => {
+    if (running) {
+        Snake_player.speed = 8
+        Snake_player.mass_losing_speed = 10
+    }
+})
 
-// canvas.addEventListener('mouseup', (e) => {
-//     if (Snake.running && Snake.len > 0) {
-//         Snake.speed = 3
-//         Snake.mass_losing_speed = 100
-//     }
-// })
+canvas.addEventListener('mouseup', (e) => {
+    if (running) {
+        Snake_player.speed = 3
+        Snake_player.mass_losing_speed = 100
+    }
+})
 
 // // // on mouse move change angle 
 canvas.addEventListener('mousemove', function (e) {
@@ -68,16 +68,8 @@ canvas.addEventListener('mouseover', function (e) {
 // });
 
 
-canvas.addEventListener('click', (e) => {
-    chatSocket.send(JSON.stringify({
-        'message': [2, 2],
-    }));
-})
-
-
 
 chatSocket.onmessage = function (e) {
-    console.log(JSON.parse(e.data));
     if (!running) {
         Snake_player.raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
