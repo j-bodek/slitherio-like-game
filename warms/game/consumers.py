@@ -3,10 +3,12 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 import random
+from .food import generate_food_coordinates
 
-players = []
+food_coordinates = generate_food_coordinates()
 
 class ChatConsumer(WebsocketConsumer):
+    players = []
     
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -26,7 +28,7 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         # Leave room group
-        players.clear()
+        self.players.clear()
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
@@ -36,32 +38,35 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = [self.channel_name,data['message']]
-        if message not in players: players.append(message)
+        if message not in self.players: self.players.append(message)
         
-        if len(players) == 2:
+        if len(self.players) == 2:
             # Send message to room group
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': players
+                    'message': self.players,
+                    'food': data['food']
                 }
             )
-            players.clear()
+            self.players.clear()
 
 
     # Receive message from room group
     def chat_message(self, event):
         
         data = event['message']
-
-        
         receiver = data[0] if data[0][0] != self.channel_name else data[1]
         sender = data[0] if data[0][0] == self.channel_name else data[1]
+
+        food_type = event['food']
+        food_message = food_coordinates if food_type == 'generate' else []
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'sender': sender[1],
             'receiver': receiver[1],
+            'food': food_message
         }))
       
 

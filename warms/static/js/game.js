@@ -55,6 +55,7 @@ canvas.addEventListener('mouseover', function (e) {
         // on mouse over send first 'starting position message'
         chatSocket.send(JSON.stringify({
             'message': [0, 0],
+            'food': 'generate',
         }));
     }
 });
@@ -66,26 +67,38 @@ canvas.addEventListener('mouseover', function (e) {
 //     window.cancelAnimationFrame(Snake.raf);
 //     Snake.running = false;
 // });
-
-
+let send = true
+canvas.addEventListener('click', function (e) {
+    send = false
+})
 
 chatSocket.onmessage = function (e) {
+
+    const data = JSON.parse(e.data);
+
     if (!running) {
         Snake_player.raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
         });
 
+        // copy of data['food']
+        food_coordinates = data['food'].slice()
+
+        display_food(food_coordinates)
+
         running = true
     }
 
-    const data = JSON.parse(e.data);
     Snake_player.vx = data['sender'][0]
     Snake_player.vy = data['sender'][1]
     Snake_oponent.vx = data['receiver'][0]
     Snake_oponent.vy = data['receiver'][1]
 
 
+
     chatSocket.send(JSON.stringify({
         'message': [vx, vy],
+        'food': false
     }));
+    // after sending eaten points clear them
 }

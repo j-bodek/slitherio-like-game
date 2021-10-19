@@ -9,7 +9,7 @@ let generate_point = function (x, y, radius, color) {
     ctx_food.beginPath();
     ctx_food.arc(x, y, radius, 0, Math.PI * 2, true);
     ctx_food.closePath();
-    ctx_food.fillStyle = color;
+    ctx_food.fillStyle = colors[color];
     ctx_food.fill();
 }
 
@@ -20,26 +20,16 @@ let generateCoorginates = function () {
     let x = Math.floor(Math.random() * 2000);
     let y = Math.floor(Math.random() * 2000);
     let radius = (5 + Math.round(Math.random() * 5));
-    let color = colors[Math.round(Math.random() * 6)]
-
-    // push food info to array
-    food_coordinates.push({
-        'x': x,
-        'y': y,
-        'radius': radius,
-        'color': color
-    })
+    let color = Math.round(Math.random() * 6)
 
     return [x, y, radius, color]
 }
 
 
-let display_food = function () {
-    for (let i = 0; i < 200; i++) {
-        let [x, y, radius, color] = generateCoorginates()
-        // render food
-        generate_point(x, y, radius, color)
-    }
-}
+let display_food = function (food_coordinates) {
+    ctx_food
+    food_coordinates.forEach((point) => {
+        generate_point(point['x'], point['y'], point['radius'], point['color'])
+    })
 
-display_food()
+}

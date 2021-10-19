@@ -272,17 +272,13 @@ draw_ball = function (x, y, radius, color) {
 
 eat_food = function (Snake) {
     food_coordinates.forEach((food) => {
-        if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25 && Snake.type == 'player') {
+        if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25) {
             // remove food
             let food_index = food_coordinates.indexOf(food);
             food_coordinates.splice(food_index, 1)
             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
             // make snake longer
             Snake.len++
-            // generate new point coordinates
-            let [x, y, radius, color] = generateCoorginates()
-            // display point
-            generate_point(x, y, radius, color)
         }
     })
 }
@@ -297,7 +293,6 @@ die = function (Snake) {
         part.update()
     })
 }
-
 
 
 draw = function (Snake_player, Snake_oponent) {
@@ -324,8 +319,6 @@ draw = function (Snake_player, Snake_oponent) {
         Snake.tail.forEach((el) => {
             draw_ball(el[0], el[1], 28, Snake.color)
         })
-
-
 
         Snake.x += Snake.vx;
         Snake.y += Snake.vy;
@@ -367,7 +360,7 @@ draw = function (Snake_player, Snake_oponent) {
         // }
     })
 
-
+    i++
 
     raf = window.requestAnimationFrame(function () {
         draw(Snake_player, Snake_oponent);
@@ -388,7 +381,7 @@ draw = function (Snake_player, Snake_oponent) {
 class Warm {
 
 
-    constructor(Snake_color, Snake_type) {
+    constructor(Snake_color, Snake_type, start_x, start_y) {
         this.raf;
         this.type = Snake_type
         this.running = false;
@@ -404,8 +397,8 @@ class Warm {
         this.centerX = window.innerWidth / 2;
         this.centerY = window.innerHeight / 2;
 
-        this.x = this.centerX;
-        this.y = this.centerY;
+        this.x = 100;
+        this.y = 100;
         this.screenX = 0;
         this.screenY = 0;
         this.vx = 0;
