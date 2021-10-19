@@ -3,18 +3,20 @@ let Snake_oponent;
 let running = false
 let vx = 0;
 let vy = 0;
+let speed = 3;
+let mass_losing_speed = 100;
 
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
-        Snake_player.speed = 8
-        Snake_player.mass_losing_speed = 10
+        speed = 8
+        mass_losing_speed = 10
     }
 })
 
 canvas.addEventListener('mouseup', (e) => {
     if (running && Snake_player && Snake_oponent) {
-        Snake_player.speed = 3
-        Snake_player.mass_losing_speed = 100
+        speed = 3
+        mass_losing_speed = 100
     }
 })
 
@@ -54,7 +56,7 @@ canvas.addEventListener('mouseover', function (e) {
     if (!running) {
         // on mouse over send first 'starting position message'
         chatSocket.send(JSON.stringify({
-            'message': [0, 0],
+            'message': [0, 0, speed, mass_losing_speed],
             'food': 'generate',
         }));
     }
@@ -94,13 +96,19 @@ chatSocket.onmessage = function (e) {
 
     Snake_player.vx = data['sender'][0]
     Snake_player.vy = data['sender'][1]
+    Snake_player.speed = data['sender'][2]
+    Snake_player.mass_losing_speed = data['sender'][3]
+
+
     Snake_oponent.vx = data['receiver'][0]
     Snake_oponent.vy = data['receiver'][1]
+    Snake_oponent.speed = data['receiver'][2]
+    Snake_oponent.mass_losing_speed = data['receiver'][3]
 
 
 
     chatSocket.send(JSON.stringify({
-        'message': [vx, vy],
+        'message': [vx, vy, speed, mass_losing_speed],
         'food': false
     }));
     // after sending eaten points clear them

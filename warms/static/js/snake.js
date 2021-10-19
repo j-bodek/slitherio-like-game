@@ -352,14 +352,14 @@ draw = function (Snake_player, Snake_oponent) {
 
 
         // // // after hiting border
-        // if (Snake.y > canvas.height ||
-        //     Snake.y < 0) {
-        //     die(Snake)
-        // }
-        // if (Snake.x > canvas.width ||
-        //     Snake.x < 0) {
-        //     die(Snake)
-        // }
+        if (Snake.y > canvas.height ||
+            Snake.y < 0) {
+            die(Snake)
+        }
+        if (Snake.x > canvas.width ||
+            Snake.x < 0) {
+            die(Snake)
+        }
     })
 
 
