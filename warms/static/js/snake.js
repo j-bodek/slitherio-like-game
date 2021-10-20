@@ -1,6 +1,8 @@
 const container = document.getElementById('world')
 let canvas = document.getElementById('box');
 let ctx = canvas.getContext('2d');
+let end_game = false
+let loser;
 
 
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -321,6 +323,13 @@ draw = function (Snake_player, Snake_oponent) {
             draw_ball(el[0], el[1], 28, Snake.color)
         })
 
+        // draw test point on head border
+        test_x = Snake.x + (28 / Snake.speed) * Snake.vx
+        test_y = Snake.y + (28 / Snake.speed) * Snake.vy
+        draw_ball(test_x, test_y, 5, 'black')
+
+
+
 
         Snake.x += Snake.vx;
         Snake.y += Snake.vy;
@@ -358,6 +367,22 @@ draw = function (Snake_player, Snake_oponent) {
         }
         if (Snake.x > canvas.width ||
             Snake.x < 0) {
+            die(Snake)
+        }
+
+        if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300) {
+            colision_snake = Snake.type == 'oponent' ? Snake_player : Snake_oponent
+            colision_snake.tail.forEach(part => {
+                if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300 &&
+                    Math.sqrt(Math.pow(test_x - colision_snake.x, 2) + Math.pow(test_y - colision_snake.y, 2)) < Snake.radius &&
+                    !end_game) {
+                    loser = Snake.type
+                    end_game = true
+                }
+            })
+        }
+
+        if (Snake.type == loser && end_game) {
             die(Snake)
         }
     })

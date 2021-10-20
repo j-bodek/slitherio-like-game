@@ -69,10 +69,7 @@ canvas.addEventListener('mouseover', function (e) {
 //     window.cancelAnimationFrame(Snake.raf);
 //     Snake.running = false;
 // });
-let send = true
-canvas.addEventListener('click', function (e) {
-    send = false
-})
+
 
 chatSocket.onmessage = function (e) {
 
@@ -93,6 +90,11 @@ chatSocket.onmessage = function (e) {
 
         running = true
     }
+
+    if (end_game) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
 
     Snake_player.vx = data['sender'][0]
     Snake_player.vy = data['sender'][1]
