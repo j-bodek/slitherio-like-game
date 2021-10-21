@@ -303,7 +303,15 @@ draw = function (Snake_player, Snake_oponent) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    [Snake_player, Snake_oponent].forEach((Snake) => {
+    if (loser) {
+        Snake_order_list = loser == 'player' ? [Snake_player, Snake_oponent] : [Snake_oponent, Snake_player]
+    } else {
+        Snake_order_list = [Snake_player, Snake_oponent]
+    }
+
+
+
+    Snake_order_list.forEach((Snake) => {
         Snake.index++
         display_tail(Snake)
 
@@ -322,12 +330,6 @@ draw = function (Snake_player, Snake_oponent) {
         Snake.tail.forEach((el) => {
             draw_ball(el[0], el[1], 28, Snake.color)
         })
-
-        // draw test point on head border
-        test_x = Snake.x + (28 / Snake.speed) * Snake.vx
-        test_y = Snake.y + (28 / Snake.speed) * Snake.vy
-        draw_ball(test_x, test_y, 5, 'black')
-
 
 
 
@@ -360,6 +362,11 @@ draw = function (Snake_player, Snake_oponent) {
 
 
 
+        // specify moveing direction point
+        moving_x = Snake.x + (28 / Snake.speed) * Snake.vx
+        moving_y = Snake.y + (28 / Snake.speed) * Snake.vy
+
+
         // // // after hiting border
         if (Snake.y > canvas.height ||
             Snake.y < 0) {
@@ -370,11 +377,12 @@ draw = function (Snake_player, Snake_oponent) {
             die(Snake)
         }
 
+        // detect colision
         if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300) {
             colision_snake = Snake.type == 'oponent' ? Snake_player : Snake_oponent
             colision_snake.tail.forEach(part => {
                 if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300 &&
-                    Math.sqrt(Math.pow(test_x - colision_snake.x, 2) + Math.pow(test_y - colision_snake.y, 2)) < Snake.radius &&
+                    Math.sqrt(Math.pow(moving_x - colision_snake.x, 2) + Math.pow(moving_y - colision_snake.y, 2)) < Snake.radius &&
                     !end_game) {
                     loser = Snake.type
                     end_game = true
@@ -382,6 +390,7 @@ draw = function (Snake_player, Snake_oponent) {
             })
         }
 
+        // die after colision with another snake
         if (Snake.type == loser && end_game) {
             die(Snake)
         }
