@@ -50,7 +50,7 @@ img {
     text-align: center;
 }
 
-.score>#your_score {
+.score>#player_score {
     float: left;
     color: white;
     font-weight: bold;
