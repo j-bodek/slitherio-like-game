@@ -6,6 +6,7 @@ let vy = 0;
 let speed = 3;
 let mass_losing_speed = 100;
 let score_box = document.querySelector('.score')
+let raf;
 
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
@@ -96,9 +97,12 @@ chatSocket.onmessage = function (e) {
             loser;
             end_game = false;
 
+            // delete animation
+            window.cancelAnimationFrame(raf);
+
             // delete snake_player and snake_oponent
-            delete Snake_player
-            delete Snake_oponent
+            Snake_player.destroy()
+            Snake_oponent.destroy()
 
 
         }, 5000);
@@ -113,8 +117,9 @@ chatSocket.onmessage = function (e) {
 
         Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0])
         Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1])
+        console.log(Snake_player);
 
-        Snake_player.raf = window.requestAnimationFrame(function () {
+        raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
         });
 
