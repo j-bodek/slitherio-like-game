@@ -3,6 +3,7 @@ body {
     padding: 0;
     background-image: url('dark-honeycomb.png');
     background-size: 1200px;
+    font-family: sans-serif;
 }
 
 /* game */
@@ -33,6 +34,32 @@ img {
     opacity: 0.7;
     background-image: linear-gradient(#e5e6f9 0.7000000000000001px, transparent 0.7000000000000001px), linear-gradient(to right, #e5e6f9 0.7000000000000001px, #3e3e73 0.7000000000000001px);
     background-size: 14px 14px;
+}
+
+
+/* Score */
+.score {
+    position: absolute;
+    width: 240px;
+    padding: 30px 30px;
+    top: calc(50% - 40px);
+    left: calc(50% - 150px);
+    background: #ade8f4;
+    border: 3px solid #00b4d8;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.score>#your_score {
+    float: left;
+    color: white;
+    font-weight: bold;
+}
+
+.score>#oponent_score {
+    float: right;
+    color: #ff928b;
+    font-weight: bold;
 }
 
 
