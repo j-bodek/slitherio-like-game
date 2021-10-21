@@ -76,21 +76,15 @@ chatSocket.onmessage = function (e) {
 
     if (end_game) {
 
-        console.log(loser);
-        // winner = loser = 'oponent' ? 'player_score' : 'oponent_score'
-        // winner_score_box = document.getElementById(winner)
-        // console.log(winner_score_box);
-        // winner_score = parseInt(winner_score_box.textContent.slice(-5, -4)) + 1
-        // winner_score_box.textContent = winner_score_box.textContent.slice(0, -5) + toString(winner_score) + ' / 3'
-        // // display score
-        // score_box.style.display = 'block'
+        winner = loser == 'oponent' ? 'player_score' : 'oponent_score'
+        winner_score_box = document.getElementById(winner)
+        winner_score = parseInt(winner_score_box.textContent.slice(-5, -4)) + 1
+        winner_score_box.textContent = winner_score_box.textContent.slice(0, -5) + winner_score + ' / 3'
+        // display score
+        score_box.style.display = 'block'
 
         // after 5 seconds 
         setTimeout(function () {
-
-            // hide score box
-            // score_box.style.display = 'none'
-
             // send new message
             chatSocket.send(JSON.stringify({
                 'message': [0, 0, speed, mass_losing_speed],
@@ -107,12 +101,15 @@ chatSocket.onmessage = function (e) {
             delete Snake_oponent
 
 
-        }, 2000);
+        }, 5000);
     }
 
     const data = JSON.parse(e.data);
 
     if (!running) {
+
+        // hide score box
+        score_box.style.display = 'none'
 
         Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0])
         Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1])
