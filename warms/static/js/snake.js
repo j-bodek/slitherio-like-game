@@ -259,13 +259,20 @@ display_tail = function (Snake) {
     }
 }
 
-draw_ball = function (x, y, radius, color) {
+draw_ball = function (x, y, radius, color, text) {
+
 
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fillStyle = color;
     ctx.fill();
+
+    if (text) {
+        ctx.font = "14px Comic Sans MS"
+        ctx.fillStyle = 'white';
+        ctx.fillText("Hello World", x, y);
+    }
 
 }
 
@@ -328,7 +335,12 @@ draw = function (Snake_player, Snake_oponent) {
         // console.log(Snake.tail);
 
         Snake.tail.forEach((el) => {
-            draw_ball(el[0], el[1], 28, Snake.color)
+
+            if (Snake.tail.indexOf(el) == Snake.tail.length - 1) {
+                draw_ball(el[0], el[1], 28, Snake.color, true)
+            } else {
+                draw_ball(el[0], el[1], 28, Snake.color, false)
+            }
         })
 
 

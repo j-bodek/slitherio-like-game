@@ -39,6 +39,7 @@ img {
 
 /* Score */
 .score {
+    z-index: 100;
     position: absolute;
     width: 240px;
     padding: 30px 30px;

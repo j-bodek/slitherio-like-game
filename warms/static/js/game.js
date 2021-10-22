@@ -7,6 +7,7 @@ let speed = 3;
 let mass_losing_speed = 100;
 let score_box = document.querySelector('.score')
 let raf;
+let winner_score = 0
 
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
@@ -105,23 +106,22 @@ chatSocket.onmessage = function (e) {
             delete Snake_player
             delete Snake_oponent
 
-
-            if (winner_score < 2) {
-                // send new message
-                chatSocket.send(JSON.stringify({
-                    'message': [0, 0, speed, mass_losing_speed],
-                    'food': 'generate',
-                }))
-            }
+            // send new message
+            chatSocket.send(JSON.stringify({
+                'message': [0, 0, speed, mass_losing_speed],
+                'food': 'generate',
+            }))
 
             // if one user won redirect
             if (winner_score == 2) {
-                location.reload(true);
                 window.location.href = "http://127.0.0.1:8000/game";
             }
 
-
         }, 2000);
+
+
+
+
     }
 
     const data = JSON.parse(e.data);
