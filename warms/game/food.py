@@ -4,7 +4,7 @@ import math
 def generate_food_coordinates():
     food_coordinates = []
 
-    for i in range(200):
+    for i in range(300):
         x = math.ceil(random.random() * 2000) 
         y = math.ceil(random.random() * 2000) 
         radius = (5 + math.ceil(random.random() * 5))

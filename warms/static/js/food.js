@@ -27,7 +27,7 @@ let generateCoorginates = function () {
 
 
 let display_food = function (food_coordinates) {
-    ctx_food
+    ctx_food.clearRect(0, 0, canvas.width, canvas.height);
     food_coordinates.forEach((point) => {
         generate_point(point['x'], point['y'], point['radius'], point['color'])
     })
