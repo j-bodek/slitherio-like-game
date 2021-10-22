@@ -50,13 +50,13 @@ img {
     text-align: center;
 }
 
-.score>#player_score {
+.score>#Player_score {
     float: left;
     color: white;
     font-weight: bold;
 }
 
-.score>#oponent_score {
+.score>#Oponent_score {
     float: right;
     color: #ff928b;
     font-weight: bold;

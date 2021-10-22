@@ -77,20 +77,21 @@ chatSocket.onmessage = function (e) {
 
     if (end_game) {
 
-        winner = loser == 'oponent' ? 'player_score' : 'oponent_score'
+        winner = loser == 'oponent' ? 'Player_score' : 'Oponent_score'
         winner_score_box = document.getElementById(winner)
         winner_score = parseInt(winner_score_box.textContent.slice(-5, -4)) + 1
-        winner_score_box.textContent = winner_score_box.textContent.slice(0, -5) + winner_score + ' / 3'
-        // display score
+
+        if (winner_score == 2) {
+            score_box.innerHTML = winner.replace('_score', '') + ' won!'
+        } else {
+            winner_score_box.textContent = winner_score_box.textContent.slice(0, -5) + winner_score + ' / 3'
+        }
+
+        // // display score
         score_box.style.display = 'block'
 
         // after 5 seconds 
         setTimeout(function () {
-            // send new message
-            chatSocket.send(JSON.stringify({
-                'message': [0, 0, speed, mass_losing_speed],
-                'food': 'generate',
-            }))
 
             // reset settings
             running = false
@@ -101,11 +102,26 @@ chatSocket.onmessage = function (e) {
             window.cancelAnimationFrame(raf);
 
             // delete snake_player and snake_oponent
-            Snake_player.destroy()
-            Snake_oponent.destroy()
+            delete Snake_player
+            delete Snake_oponent
 
 
-        }, 5000);
+            if (winner_score < 2) {
+                // send new message
+                chatSocket.send(JSON.stringify({
+                    'message': [0, 0, speed, mass_losing_speed],
+                    'food': 'generate',
+                }))
+            }
+
+            // if one user won redirect
+            if (winner_score == 2) {
+                location.reload(true);
+                window.location.href = "http://127.0.0.1:8000/game";
+            }
+
+
+        }, 2000);
     }
 
     const data = JSON.parse(e.data);
@@ -117,7 +133,6 @@ chatSocket.onmessage = function (e) {
 
         Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0])
         Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1])
-        console.log(Snake_player);
 
         raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
