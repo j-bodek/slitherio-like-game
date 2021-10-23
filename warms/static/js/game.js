@@ -7,7 +7,7 @@ let speed = 3;
 let mass_losing_speed = 100;
 let score_box = document.querySelector('.score')
 let raf;
-let winner_score = 0
+// let winner_score = 0
 
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
@@ -126,7 +126,7 @@ chatSocket.onmessage = function (e) {
 
     const data = JSON.parse(e.data);
 
-    if (!running) {
+    if (!running && !end_game) {
 
         // hide score box
         score_box.style.display = 'none'

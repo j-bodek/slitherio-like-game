@@ -19,15 +19,15 @@
                 <button type='button' id='join_server_btn'>Join Server</button>
             </form>
     
-            <form id='create_server_form' action="" style="display:none">
-                <input id="room-name-input" type="text" size="100" placeholder="Server Id">
-                <button>Pyknij se gierke</button>
-            </form>
-    
             <form id='join_server_form' action="" style="display:none">
                 <input type="text" placeholder="Server Id">
-                <button>Join</button>
+                <button type='button' id='join_btn'>Join</button>
             </form>
+
+            <div id='joined_server_div' style="display:none">
+                <h2>Joined server: <span id='server_id' style='color:#f4a261'></span></h2>
+                <button type='button' id='leave_server'>Leave</button>
+            </div>
     
         </div>
 
