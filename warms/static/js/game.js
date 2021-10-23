@@ -82,7 +82,7 @@ chatSocket.onmessage = function (e) {
         winner_score_box = document.getElementById(winner)
         winner_score = parseInt(winner_score_box.textContent.slice(-5, -4)) + 1
 
-        if (winner_score == 2) {
+        if (winner_score == 3) {
             score_box.innerHTML = winner.replace('_score', '') + ' won!'
         } else {
             winner_score_box.textContent = winner_score_box.textContent.slice(0, -5) + winner_score + ' / 3'
@@ -113,7 +113,7 @@ chatSocket.onmessage = function (e) {
             }))
 
             // if one user won redirect
-            if (winner_score == 2) {
+            if (winner_score == 3) {
                 window.location.href = "http://127.0.0.1:8000/game";
             }
 

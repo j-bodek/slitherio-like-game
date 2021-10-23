@@ -71,7 +71,7 @@ img {
     display: flex;
     /* padding: 40px 60px; */
     position: absolute;
-    left: calc(50% - 395px);
+    left: calc(50% - 265px);
     top: calc(50vh - 150px);
     /* border-radius: 20px; */
     text-align: center;
@@ -124,7 +124,7 @@ img {
 }
 
 .play {
-    margin: 0px 5px;
+    margin-left: 10px;
 }
 
 .create_server {

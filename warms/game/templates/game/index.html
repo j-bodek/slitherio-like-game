@@ -1,13 +1,50 @@
-<!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8"/>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <title>Chat Rooms</title>
 </head>
 <body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+    
+
+    <div class='container'>
+
+        <div class='create_server'>
+
+            <div class='close' style='display: none;'>✖</div>
+
+            <form id='choose_server_form' action="">
+                <button type='button' id='create_server_btn'>Create Server</button>
+                <button type='button' id='join_server_btn'>Join Server</button>
+            </form>
+    
+            <form id='create_server_form' action="" style="display:none">
+                <input id="room-name-input" type="text" size="100" placeholder="Server Id">
+                <button>Pyknij se gierke</button>
+            </form>
+    
+            <form id='join_server_form' action="" style="display:none">
+                <input type="text" placeholder="Server Id">
+                <button>Join</button>
+            </form>
+    
+        </div>
+
+
+        <div class='play'>
+            <h2 class='title'>Masne wonsze</h2>
+            <form action="">
+                <input type="text" placeholder="Nick">
+                <button id="room-name-submit" type="button">Pyknij se gierke</button>
+            </form>
+        </div>
+
+    </div>
+
+
+
+
 
     <script>
         document.querySelector('#room-name-input').focus();
@@ -22,5 +59,6 @@
             window.location.pathname = '/game/' + roomName + '/';
         };
     </script>
+    <script  src={% static 'js/starting.js' %}></script>
 </body>
 </html>
