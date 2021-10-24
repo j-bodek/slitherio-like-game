@@ -13,8 +13,9 @@ let nickname = localStorage.getItem('nickname') ? localStorage.getItem('nickname
 
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
+let protocol = window.location.protocol == "https:" ? "wss" : "ws";
 const chatSocket = new WebSocket(
-    'ws://' +
+    protocol + '://' +
     window.location.host +
     '/ws/chat/' +
     roomName +
@@ -98,7 +99,7 @@ chatSocket.onmessage = function (e) {
 
             // if one user won redirect
             if (winner_score == 3) {
-                window.location.href = "http://127.0.0.1:8000/game";
+                window.location.href = "https://warmsy.herokuapp.com/";
             }
 
         }, 2000);
