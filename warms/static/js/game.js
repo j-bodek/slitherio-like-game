@@ -22,7 +22,7 @@ const chatSocket = new WebSocket(
 );
 
 
-
+// on mousedown speed up
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
         speed = 8
@@ -30,6 +30,7 @@ canvas.addEventListener('mousedown', (e) => {
     }
 })
 
+// after mouseup set normal speed
 canvas.addEventListener('mouseup', (e) => {
     if (running && Snake_player && Snake_oponent) {
         speed = 3
@@ -37,7 +38,7 @@ canvas.addEventListener('mouseup', (e) => {
     }
 })
 
-// // // on mouse move change angle 
+// on mouse move change moving direction angle 
 canvas.addEventListener('mousemove', function (e) {
     if (running && Snake_player && Snake_oponent) {
         let len = Math.sqrt(Math.pow(Snake_player.tail.at(-1)[0] - (e.clientX + Snake_player.screenX), 2) + Math.pow(Snake_player.tail.at(-1)[1] - (e.clientY + Snake_player.screenY), 2))
@@ -50,40 +51,17 @@ canvas.addEventListener('mousemove', function (e) {
 
 
 
-
-// // after receiving another message change warm moveing direction and send another message
-// chatSocket.onmessage = function (e) {
-
-//     const data = JSON.parse(e.data);
-//     Snake.vx = data['message'][0]
-//     Snake.vy = data['message'][1]
-
-
-//     chatSocket.send(JSON.stringify({
-//         'message': [vx, vy],
-//     }));
-
-// }
-
-
-
-
-
-
-// canvas.addEventListener('mouseout', function (e) {
-//     window.cancelAnimationFrame(Snake.raf);
-//     Snake.running = false;
-// });
-
-
+// after receiving websocket message
 chatSocket.onmessage = function (e) {
 
     if (end_game) {
 
+        // get winner
         winner = loser == 'oponent' ? 'Player_score' : 'Oponent_score'
         winner_score_box = document.getElementById(winner)
         winner_score = parseInt(winner_score_box.textContent.slice(-5, -4)) + 1
 
+        // if player have 3 scores display winner 
         if (winner_score == 3) {
             score_box.innerHTML = winner.replace('_score', '') + ' won!'
         } else {
@@ -100,6 +78,10 @@ chatSocket.onmessage = function (e) {
             running = false
             loser;
             end_game = false;
+            speed = 3;
+            mass_losing_speed = 100;
+            vx = 0
+            vy = 0
 
             // delete animation
             window.cancelAnimationFrame(raf);
@@ -126,19 +108,22 @@ chatSocket.onmessage = function (e) {
 
     }
 
-    const data = JSON.parse(e.data);
 
     if (!running && !end_game) {
+        // get message data
+        const data = JSON.parse(e.data);
+
         // hide waiting message
         document.querySelector('.waiting_message').style.display = 'none'
 
         // hide score box
         score_box.style.display = 'none'
 
-
+        // create snakes
         Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0], nickname)
         Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1], '')
 
+        // request animation
         raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)
         });
@@ -155,17 +140,22 @@ chatSocket.onmessage = function (e) {
 
     if (!end_game) {
 
+        // get message data
+        const data = JSON.parse(e.data);
+
+        // change player moving settings
         Snake_player.vx = data['sender'][0]
         Snake_player.vy = data['sender'][1]
         Snake_player.speed = data['sender'][2]
         Snake_player.mass_losing_speed = data['sender'][3]
 
-
+        // change oponent moving settings    
         Snake_oponent.vx = data['receiver'][0]
         Snake_oponent.vy = data['receiver'][1]
         Snake_oponent.speed = data['receiver'][2]
         Snake_oponent.mass_losing_speed = data['receiver'][3]
 
+        // send websocket message with player moving data
         chatSocket.send(JSON.stringify({
             'message': [vx, vy, speed, mass_losing_speed],
             'food': false

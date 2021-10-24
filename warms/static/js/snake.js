@@ -6,13 +6,8 @@ let loser;
 
 
 
-
-
-
-
-
-
-class warmPart {
+// part of Snake after it crash
+class snakePart {
     constructor(x, y, velocityX, velocityY, color, radius) {
         this.x = x;
         this.y = y;
@@ -23,7 +18,6 @@ class warmPart {
     }
 
     draw_part() {
-
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
         ctx.closePath();
@@ -53,84 +47,12 @@ class warmPart {
 
 
 
-
-
-// let ball = {
-//     x: centerX,
-//     y: centerY,
-//     screenX: 0,
-//     screenY: 0,
-//     vx: 0,
-//     vy: 0,
-//     radius: 25,
-//     color: '#e9c46a',
-//     shade: '#F2DCA6',
-//     tail: [],
-
-
-
-//     draw: function (x, y, radius, color) {
-
-//         ctx.beginPath();
-//         ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-//         ctx.closePath();
-//         ctx.fillStyle = color;
-//         ctx.fill();
-
-//     },
-
-// };
-
-
-
-// let leave_mass = function () {
-//     ball.tail.forEach((e) => {
-//         let x = Math.floor(e[0] + (Math.random() * 40));
-//         let y = Math.floor(e[1] + (Math.random() * 40));
-//         let radius = (2 + Math.floor(Math.random() * 4));
-//         let color = 'red';
-//         // display food
-//         generate_point(x, y, radius, color)
-//     })
-// }
-
-
-
-
-// let display_tail = function () {
-//     if (ball.tail.length < len) {
-//         ball.tail.push([ball.x, ball.y])
-//         index = 0
-//     } else if (ball.tail.length == len) {
-//         ball.tail.shift()
-//         ball.tail.push([ball.x, ball.y])
-//         index = 0
-//     }
-// }
-
-
-// let eat_food = function () {
-//     food_coordinates.forEach((food) => {
-//         if (Math.sqrt(Math.pow(food['x'] - ball.x, 2) + Math.pow(food['y'] - ball.y, 2)) < 25) {
-//             // remove food
-//             let index = food_coordinates.indexOf(food);
-//             food_coordinates.splice(index, 1)
-//             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
-//             // make snake longer
-//             len++
-//             // generate new point coordinates
-//             let [x, y, radius, color] = generateCoorginates()
-//             // display point
-//             generate_point(x, y, radius, color)
-//         }
-//     })
-// }
-
+// create list of snake parts after it crash
 let createparts = function (Snake) {
     for (let i = 0; i < Snake.len; i++) {
 
-        Snake.warmParts.push(new warmPart(Snake.x, Snake.y,
-            (Snake.speed / 3) * ((Math.random() * 8) - 4),
+        Snake.snakeParts.push(new snakePart(Snake.x, Snake.y,
+            (Snake.speed / 3) * ((Math.random() * 8) - 4), // generate random speed that depends on snake speed
             (Snake.speed / 3) * ((Math.random() * 8) - 4),
             colors[(Math.round(Math.random() * 5))],
             (5 + Math.floor(Math.random() * 5))
@@ -139,120 +61,25 @@ let createparts = function (Snake) {
 }
 
 
-// let die = function () {
 
-//     len > 0 ? createparts() : 0;
-//     len = 0
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-//     warmParts.forEach((part) => {
-//         part.update()
-//     })
-// }
-
-
-
-
-
-
-// function draw() {
-
-
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-//     index++
-//     display_tail()
-
-
-//     // display shades while speeding
-//     if (speed == 8) {
-//         ball.tail.forEach((el) => {
-//             ball.draw(el[0], el[1], 28, ball.shade)
-//         })
-//     }
-
-
-//     // display main warm
-//     ball.tail.forEach((el) => {
-//         ball.draw(el[0], el[1], 25, ball.color)
-//     })
-
-
-
-//     ball.x += ball.vx;
-//     ball.y += ball.vy;
-
-
-//     // after eating food
-//     eat_food()
-
-
-//     // change camera view
-//     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-//     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
-
-//     container.scrollTo((ball.x - centerX), (ball.y - centerY))
-
-
-//     // lose mass logic
-//     if (lose_mass % mass_losing_speed == 0) {
-//         // subtract one from length
-//         lose_mass = 1
-//         len--
-//         ball.tail.shift()
-//     } else {
-//         lose_mass++
-//     }
-
-
-
-//     // after hiting border
-//     if (ball.y > canvas.height ||
-//         ball.y < 0) {
-//         die()
-//     }
-//     if (ball.x > canvas.width ||
-//         ball.x < 0) {
-//         die()
-//     }
-
-
-//     raf = window.requestAnimationFrame(draw);
-
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// display snake parts (tail and head)
 display_tail = function (Snake) {
+    // if snake tail list len is less then snake length
     if (Snake.tail.length < Snake.len) {
+        // push coordinates of head to list
         Snake.tail.push([Snake.x, Snake.y])
-        Snake.index = 0
-    } else if (Snake.tail.length == Snake.len) {
+    }
+    //  if snake tail list len is equal to snake length
+    else if (Snake.tail.length == Snake.len) {
+        // remove first list element (last part of tail)
         Snake.tail.shift()
+        // and push new 
         Snake.tail.push([Snake.x, Snake.y])
-        Snake.index = 0
     }
 }
 
+// draw snake part
 draw_ball = function (x, y, radius, color, text) {
-
 
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2, true);
@@ -270,11 +97,12 @@ draw_ball = function (x, y, radius, color, text) {
 
 
 
-
+// after eating food
 eat_food = function (Snake) {
     food_coordinates.forEach((food) => {
+        // if distance from center of head snake and center of food is less then 25 (head radius) 
         if (Math.sqrt(Math.pow(food['x'] - Snake.x, 2) + Math.pow(food['y'] - Snake.y, 2)) < 25) {
-            // remove food
+            // remove food from area
             let food_index = food_coordinates.indexOf(food);
             food_coordinates.splice(food_index, 1)
             ctx_food.clearRect(food['x'] - food['radius'], food['y'] - food['radius'], 2 * food['radius'], 2 * food['radius']);
@@ -284,22 +112,23 @@ eat_food = function (Snake) {
     })
 }
 
+
 die = function (Snake) {
 
     Snake.len > 0 ? createparts(Snake) : 0;
     Snake.len = 0
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    Snake.warmParts.forEach((part) => {
+    Snake.snakeParts.forEach((part) => {
         part.update()
     })
 }
 
 
-
+// draw snakes and their actions
 draw = function (Snake_player, Snake_oponent) {
 
-
+    // clear canvas before displaying new snakes positions
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (loser) {
@@ -311,21 +140,9 @@ draw = function (Snake_player, Snake_oponent) {
 
 
     Snake_order_list.forEach((Snake) => {
-        Snake.index++
         display_tail(Snake)
 
-
-        // display shades while speeding
-        if (Snake.speed == 8) {
-            Snake.tail.forEach((el) => {
-                draw_ball(el[0], el[1], 28, Snake.shade)
-            })
-        }
-
-
-        // display main warm
-        // console.log(Snake.tail);
-
+        // for each part in snake tail draw it part
         Snake.tail.forEach((el) => {
 
             if (Snake.tail.indexOf(el) == Snake.tail.length - 1) {
@@ -336,7 +153,7 @@ draw = function (Snake_player, Snake_oponent) {
         })
 
 
-
+        // update Snake.x and Snake.y with x and y velocity
         Snake.x += Snake.vx;
         Snake.y += Snake.vy;
 
@@ -354,7 +171,7 @@ draw = function (Snake_player, Snake_oponent) {
         }
 
 
-        // // // lose mass logic
+        // lose mass logic
         if (Snake.lose_mass % Snake.mass_losing_speed == 0) {
             // subtract one from length
             Snake.lose_mass = 1
@@ -371,7 +188,7 @@ draw = function (Snake_player, Snake_oponent) {
         moving_y = Snake.y + (28 / Snake.speed) * Snake.vy
 
 
-        // // // after hiting border
+        // after hiting border
         if ((Snake.y > canvas.height ||
                 Snake.y < 0) && !end_game) {
             loser = Snake.type
@@ -393,11 +210,12 @@ draw = function (Snake_player, Snake_oponent) {
 
 
         // detect colision
+        // start detecting if distance between snakes heads is less then 300
         if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300) {
             colision_snake = Snake.type == 'oponent' ? Snake_player : Snake_oponent
             colision_snake.tail.forEach(part => {
-                if (Math.sqrt(Math.pow(Snake_oponent.x - Snake_player.x, 2) + Math.pow(Snake_oponent.y - Snake_player.y, 2)) < 300 &&
-                    Math.sqrt(Math.pow(moving_x - colision_snake.x, 2) + Math.pow(moving_y - colision_snake.y, 2)) < Snake.radius &&
+                // if distance between snake moveing point (point in front of snake head that specify moving diration) and any part of another snake is less then head radius
+                if (Math.sqrt(Math.pow(moving_x - part[0], 2) + Math.pow(moving_y - part[0], 2)) < Snake.radius &&
                     !end_game) {
                     loser = Snake.type
                     end_game = true
@@ -435,12 +253,11 @@ class Warm {
         this.raf;
         this.type = Snake_type
         this.running = false;
-        this.index = 0;
         this.lose_mass = 1;
         this.len = 10;
         this.speed = 3;
         this.mass_losing_speed = 100;
-        this.warmParts = []
+        this.snakeParts = []
         this.SnakeName = SnakeName
 
 
@@ -461,85 +278,3 @@ class Warm {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// chatSocket.onmessage = function (e) {
-
-//     chatSocket.send(JSON.stringify({
-//         'message': ball.tail,
-//         // 'id': snakeid
-//     }));
-
-//     const data = JSON.parse(e.data);
-
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
-//     index++
-//     display_tail()
-
-
-//     // display shades while speeding
-//     if (speed == 8) {
-//         ball.tail.forEach((el) => {
-//             ball.draw(el[0], el[1], 28, ball.shade)
-//         })
-//     }
-
-
-//     // display main warm
-//     ball.tail.forEach((el) => {
-//         ball.draw(el[0], el[1], 25, ball.color)
-//     })
-
-
-
-//     ball.x += ball.vx;
-//     ball.y += ball.vy;
-
-
-//     // after eating food
-//     eat_food()
-
-
-//     // change camera view
-//     ball.screenX = (ball.x < centerX) ? 0 : (ball.x > (2000 - centerX)) ? (2000 - (2 * centerX)) : (ball.x - centerX);
-//     ball.screenY = (ball.y < centerY) ? 0 : (ball.y > (2000 - centerY)) ? (2000 - (2 * centerY)) : (ball.y - centerY);
-
-//     container.scrollTo((ball.x - centerX), (ball.y - centerY))
-
-
-
-
-
-
-//     // // display main warm
-//     // data['message'].forEach((el) => {
-//     //     ball.draw(el[0], el[1], 25, ball.color)
-//     // })
-
-
-
-
-// };
