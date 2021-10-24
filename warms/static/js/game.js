@@ -7,7 +7,20 @@ let speed = 3;
 let mass_losing_speed = 100;
 let score_box = document.querySelector('.score')
 let raf;
+let starting = true
 // let winner_score = 0
+
+const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+const chatSocket = new WebSocket(
+    'ws://' +
+    window.location.host +
+    '/ws/chat/' +
+    roomName +
+    '/'
+);
+
+
 
 canvas.addEventListener('mousedown', (e) => {
     if (running && Snake_player && Snake_oponent) {
@@ -54,16 +67,18 @@ canvas.addEventListener('mousemove', function (e) {
 
 
 
-
-canvas.addEventListener('mouseover', function (e) {
-    if (!running) {
-        // on mouse over send first 'starting position message'
+window.addEventListener('load', function () {
+    if (starting) {
+        console.log('send');
         chatSocket.send(JSON.stringify({
             'message': [0, 0, speed, mass_losing_speed],
             'food': 'generate',
         }));
     }
-});
+})
+
+
+
 
 
 
@@ -127,6 +142,8 @@ chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
 
     if (!running && !end_game) {
+        // hide waiting message
+        document.querySelector('.waiting_message').style.display = 'none'
 
         // hide score box
         score_box.style.display = 'none'

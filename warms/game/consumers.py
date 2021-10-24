@@ -49,6 +49,7 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = [self.channel_name,data['message']]
+        print(message)
         if message not in players: players.append(message)
         if not player_coordinates: player_coordinates.append([self.channel_name, 100, 500])
         

@@ -38,7 +38,8 @@ img {
 
 
 /* Score */
-.score {
+.score,
+.waiting_message {
     z-index: 100;
     position: absolute;
     width: 240px;
