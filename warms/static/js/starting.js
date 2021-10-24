@@ -41,7 +41,7 @@ document.getElementById('join_server_btn').addEventListener('click', (e) => {
     choose_server_form.style.display = 'none'
     join_server_form.style.display = 'block'
     joined_server_div.style.display = 'none'
-    document.querySelector('.close').style.display = 'none'
+    document.querySelector('.close').style.display = 'block'
 })
 
 // closer joining to server
@@ -54,8 +54,16 @@ document.querySelector('.close').addEventListener('click', (e) => {
 
 // join server
 document.getElementById('join_btn').addEventListener('click', (e) => {
-    choose_server_form.style.display = 'none'
-    join_server_form.style.display = 'none'
-    joined_server_div.style.display = 'block'
-    document.querySelector('.close').style.display = 'none'
+    serverId = document.getElementById('join_server_id').value
+    if (serverId.length == 10) {
+        localStorage.setItem('serverId', serverId);
+
+        choose_server_form.style.display = 'none'
+        join_server_form.style.display = 'none'
+        joined_server_div.style.display = 'block'
+        document.querySelector('.close').style.display = 'none'
+        // display server id
+        document.getElementById('server_id').textContent = localStorage.getItem('serverId')
+        document.querySelector('.close').style.display = 'none'
+    }
 })
