@@ -215,7 +215,7 @@ draw = function (Snake_player, Snake_oponent) {
             colision_snake = Snake.type == 'oponent' ? Snake_player : Snake_oponent
             colision_snake.tail.forEach(part => {
                 // if distance between snake moveing point (point in front of snake head that specify moving diration) and any part of another snake is less then head radius
-                if (Math.sqrt(Math.pow(moving_x - part[0], 2) + Math.pow(moving_y - part[0], 2)) < Snake.radius &&
+                if (Math.sqrt(Math.pow(moving_x - part[0], 2) + Math.pow(moving_y - part[1], 2)) < Snake.radius &&
                     !end_game) {
                     loser = Snake.type
                     end_game = true

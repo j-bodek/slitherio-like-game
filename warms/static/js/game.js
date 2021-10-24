@@ -24,7 +24,7 @@ const chatSocket = new WebSocket(
 
 // on mousedown speed up
 canvas.addEventListener('mousedown', (e) => {
-    if (running && Snake_player && Snake_oponent) {
+    if (running && Snake_player && Snake_oponent && !end_game) {
         speed = 8
         mass_losing_speed = 10
     }
@@ -32,7 +32,7 @@ canvas.addEventListener('mousedown', (e) => {
 
 // after mouseup set normal speed
 canvas.addEventListener('mouseup', (e) => {
-    if (running && Snake_player && Snake_oponent) {
+    if (running && Snake_player && Snake_oponent && !end_game) {
         speed = 3
         mass_losing_speed = 100
     }
@@ -40,7 +40,7 @@ canvas.addEventListener('mouseup', (e) => {
 
 // on mouse move change moving direction angle 
 canvas.addEventListener('mousemove', function (e) {
-    if (running && Snake_player && Snake_oponent) {
+    if (running && Snake_player && Snake_oponent && !end_game) {
         let len = Math.sqrt(Math.pow(Snake_player.tail.at(-1)[0] - (e.clientX + Snake_player.screenX), 2) + Math.pow(Snake_player.tail.at(-1)[1] - (e.clientY + Snake_player.screenY), 2))
         let scale = Snake_player.speed / len
 

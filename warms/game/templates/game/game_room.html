@@ -32,47 +32,6 @@
 
 
 
-    <!-- <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        // chatSocket.onmessage = function(e) {
-        //     const data = JSON.parse(e.data);
-            
-        //     ctx.beginPath();
-        //     ctx.arc(data['message'][0], data['message'][1], 10, 0, Math.PI * 2, true);
-        //     ctx.closePath();
-        //     ctx.fillStyle = 'red';
-        //     ctx.fill();
-        // };
-
-
-
-        // let canvas = document.getElementById('test');
-        // let ctx = canvas.getContext('2d');
-
-        // document.querySelector('#test').onclick = function(e) {
-        //     coordinates = [e.clientX, e.clientY]
-
-        //     // const message = messageInputDom.value;
-        //     chatSocket.send(JSON.stringify({
-        //         'message': coordinates
-        //     }));
-  
-        // };
-    </script> -->
-
-
-
-
-
     <script  src={% static 'js/food.js' %}></script>
     <script  src={% static 'js/snake.js' %}></script>
     <script  src={% static 'js/game.js' %}></script>
