@@ -263,7 +263,7 @@ draw_ball = function (x, y, radius, color, text) {
     if (text) {
         ctx.font = "14px Comic Sans MS"
         ctx.fillStyle = 'white';
-        ctx.fillText("Hello World", x, y);
+        ctx.fillText(text, x, y);
     }
 
 }
@@ -329,7 +329,7 @@ draw = function (Snake_player, Snake_oponent) {
         Snake.tail.forEach((el) => {
 
             if (Snake.tail.indexOf(el) == Snake.tail.length - 1) {
-                draw_ball(el[0], el[1], 28, Snake.color, true)
+                draw_ball(el[0], el[1], 28, Snake.color, Snake.SnakeName)
             } else {
                 draw_ball(el[0], el[1], 28, Snake.color, false)
             }
@@ -425,7 +425,7 @@ draw = function (Snake_player, Snake_oponent) {
 class Warm {
 
 
-    constructor(Snake_color, Snake_type, start_coordinates) {
+    constructor(Snake_color, Snake_type, start_coordinates, SnakeName) {
         this.raf;
         this.type = Snake_type
         this.running = false;
@@ -435,6 +435,7 @@ class Warm {
         this.speed = 3;
         this.mass_losing_speed = 100;
         this.warmParts = []
+        this.SnakeName = SnakeName
 
 
 

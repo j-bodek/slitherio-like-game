@@ -38,7 +38,7 @@
         <div class='play'>
             <h2 class='title'>Masne wonsze</h2>
             <form action="">
-                <input type="text" placeholder="Nick">
+                <input id='nickname' type="text" placeholder="Nick">
                 <button id="room-name-submit" type="button">Pyknij se gierke</button>
             </form>
         </div>
@@ -59,8 +59,16 @@
 
         document.querySelector('#room-name-submit').onclick = function(e) {
             let roomName = localStorage.getItem('serverId');
+            let nickname = document.getElementById('nickname').value
+            if(localStorage.getItem('nickname')){
+                document.getElementById('nickname').value = localStorage.getItem('nickname');
+            }
+            
             if(roomName){
                 window.location.pathname = '/game/' + roomName + '/';
+                if(!localStorage.getItem('nickname')){
+                    localStorage.setItem('nickname', nickname);
+                }
             }
         };
     </script>

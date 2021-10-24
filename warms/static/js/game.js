@@ -8,7 +8,8 @@ let mass_losing_speed = 100;
 let score_box = document.querySelector('.score')
 let raf;
 let starting = true
-// let winner_score = 0
+let winner_score = 0
+let nickname = localStorage.getItem('nickname') ? localStorage.getItem('nickname') : ''
 
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
@@ -63,20 +64,6 @@ canvas.addEventListener('mousemove', function (e) {
 //     }));
 
 // }
-
-
-
-
-window.addEventListener('load', function () {
-    if (starting) {
-        console.log('send');
-        chatSocket.send(JSON.stringify({
-            'message': [0, 0, speed, mass_losing_speed],
-            'food': 'generate',
-        }));
-    }
-})
-
 
 
 
@@ -148,8 +135,9 @@ chatSocket.onmessage = function (e) {
         // hide score box
         score_box.style.display = 'none'
 
-        Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0])
-        Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1])
+
+        Snake_player = new Warm('#e9c46a', 'player', data['player_coordinates'][0], nickname)
+        Snake_oponent = new Warm('#2a9d8f', 'oponent', data['player_coordinates'][1], '')
 
         raf = window.requestAnimationFrame(function () {
             draw(Snake_player, Snake_oponent)

@@ -28,6 +28,24 @@ class ChatConsumer(WebsocketConsumer):
 
         self.accept()
 
+        # send first message after two players were connected
+        message = [self.channel_name, [0, 0, 3, 10]]
+        if message not in players: players.append(message)
+        if not player_coordinates: player_coordinates.append([self.channel_name, 100, 500])
+        
+        if len(players) == 2:
+
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': players,
+                    'food': 'generate'
+                }
+            )
+            players.clear()
+
         
 
 
@@ -49,7 +67,6 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = [self.channel_name,data['message']]
-        print(message)
         if message not in players: players.append(message)
         if not player_coordinates: player_coordinates.append([self.channel_name, 100, 500])
         
