@@ -384,6 +384,12 @@ draw = function (Snake_player, Snake_oponent) {
             end_game = true
         }
 
+        // lose if snake length is less then 1
+        if (Snake.len < 1 && !end_game) {
+            loser = Snake.type
+            end_game = true
+        }
+
 
 
         // detect colision

@@ -31,7 +31,7 @@ class ChatConsumer(WebsocketConsumer):
         # send first message after two players were connected
         message = [self.channel_name, [0, 0, 3, 10]]
         if message not in players: players.append(message)
-        if not player_coordinates: player_coordinates.append([self.channel_name, 100, 500])
+        if not player_coordinates: player_coordinates.append([self.channel_name, 100, 1900])
         
         if len(players) == 2:
 
